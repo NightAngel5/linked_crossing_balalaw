@@ -8,7 +8,7 @@ double Cart::norme()
 
 Cart Pol::toCart()
 {
-    Cart M = {{point.x * cos(point.y), point.x * sin(point.y)}};
+    Cart M = {{norme * cos(angle), norme * sin(angle)}};
     return M;
 }
 
@@ -16,6 +16,19 @@ Pol Cart::toPol()
 {
     Pol M = {{norme(), atan2(point.y, point.x)}};
     return M;
+}
+
+double angleNormalise(double angle)
+{
+    while (angle<-M_PI)
+    {
+        angle += 2 * M_PI;
+    }
+    while (angle>M_PI)
+    {
+        angle -= 2 * M_PI;
+    }
+    return angle;
 }
 
 double distance(Cart P1, Cart P2)
@@ -54,25 +67,22 @@ bool inclusion (Cercle C1, Cercle C2){
 }
 
 bool intersection(Cercle C1, Cercle C2){
-    if (distance(C1.C, C2.C)<C2.R+C1.R+epsil_zero) {
-        return true;
-    } else {
+    if (inclusion(C1,C2) || inclusion(C2,C1) || distance(C1.C, C2.C)>=C2.R+C1.R+epsil_zero) {
         return false;
+    } else {
+        return true;
     }
 }
 
-Cart reflect(Cart P, Pol V, State state)
+Pol reflect(Cart P, Pol V, State state)
 {
     if (state==BACKWARD)
     {
-        V.y = -V.y;
+        V.angle = V.angle + M_PI;
     }
-    Cart V1 = V.toCart();
-    Cart R = {P.x + V1.x, P.y + V1.y};
-    double alpha = V.y;
-    double beta = atan2(R.y, R.x);
+    double alpha = V.angle;
+    double beta = atan2(P.y, P.x);
     double alpha_prime = M_PI + 2 * beta - alpha;
-    Cart V2 = {V.x * cos(alpha_prime), V.x * sin(alpha_prime)};
-    Cart Reflechi = {R.x + V2.x, R.y + V2.y};
+    Pol Reflechi = {{V.norme,angleNormalise(alpha_prime)}};
     return Reflechi;
 }
