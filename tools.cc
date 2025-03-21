@@ -60,3 +60,15 @@ bool intersection(Cercle C1, Cercle C2){
         return false;
     }
 }
+
+Cart reflect(Cart P, Pol V)
+{
+    Cart V1 = conversion(V);
+    Cart R = {P.x + V1.x, P.y + V1.y};
+    double alpha = V.y;
+    double beta = atan2(R.y, R.x);
+    double alpha_prime = M_PI + 2 * beta - alpha;
+    Cart V2 = {V.x * cos(alpha_prime), V.x * sin(alpha_prime)};
+    Cart Reflechi = {R.x + V2.x, R.y + V2.y};
+    return Reflechi;
+}
