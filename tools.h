@@ -13,15 +13,30 @@ struct S2d {
     double x = 0.;
     double y = 0.;
 };
-typedef S2d Cart; //x l'abscisse et y l'ordonnée
-typedef S2d Pol; //x la norme et y l'angle
+struct Pol;
+struct Cart
+{
+    S2d point;
+    double x = point.x;
+    double y = point.y;
+    Pol toPol();
+    double norme();
+};
+struct Pol
+{
+    S2d point; //x norme et y angle
+    double x = point.x;
+    double y = point.y;
+    Cart toCart();
+};
+
+
 struct Cercle {
-    S2d C;
+    Cart C;
     double R;
 };
-double norme(Cart P);
-Cart conversion(Pol P);
-Pol conversion(Cart P);
+
+
 double distance(Cart P1, Cart P2);
 double distance(Pol P1, Pol P2);
 double distance(Cart P1, Pol P2);

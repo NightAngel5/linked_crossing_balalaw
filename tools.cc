@@ -1,20 +1,20 @@
 #include "tools.h"
 using namespace std;
 
-double norme(Cart P)
+double Cart::norme()
 {
-    return sqrt((P.x) *(P.x) + (P.y) *(P.y));
+    return sqrt((point.x) *(point.x) + (point.y) *(point.y));
 }
 
-Cart conversion(Pol P)
+Cart Pol::toCart()
 {
-    Cart M = {P.x * cos(P.y), P.x * sin(P.y)};
+    Cart M = {{point.x * cos(point.y), point.x * sin(point.y)}};
     return M;
 }
 
-Pol conversion(Cart P)
+Pol Cart::toPol()
 {
-    Pol M = {norme(P), atan2(P.x, P.y)};
+    Pol M = {{norme(), atan2(point.y, point.x)}};
     return M;
 }
 
@@ -25,17 +25,17 @@ double distance(Cart P1, Cart P2)
 
 double distance(Pol P1, Pol P2)
 {
-    return distance(conversion(P1), conversion(P2));
+    return distance(P1.toCart(), P2.toCart());
 }
 
 double distance(Cart P1, Pol P2)
 {
-    return distance(P1, conversion(P2));
+    return distance(P1, P2.toCart());
 }
 
 double distance(Pol P1, Cart P2)
 {
-    return distance(P1, conversion(P2));
+    return distance(P1.toCart(), P2);
 }
 bool inclusion (Cercle C1, Cart P){
     if (distance(C1.C, P)<C1.R-epsil_zero) {
@@ -63,11 +63,11 @@ bool intersection(Cercle C1, Cercle C2){
 
 Cart reflect(Cart P, Pol V, State state)
 {
-    if (state=BACKWARD)
+    if (state==BACKWARD)
     {
         V.y = -V.y;
     }
-    Cart V1 = conversion(V);
+    Cart V1 = V.toCart();
     Cart R = {P.x + V1.x, P.y + V1.y};
     double alpha = V.y;
     double beta = atan2(R.y, R.x);
