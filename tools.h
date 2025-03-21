@@ -11,7 +11,13 @@ struct Cercle {
     S2d C;
     double R;
 };
-
+double norme(Cart P);
+Cart conversion(Pol P);
+Pol conversion(Cart P);
+double distance(Cart P1, Cart P2);
+double distance(Pol P1, Pol P2);
+double distance(Cart P1, Pol P2);
+double distance(Pol P1, Cart P2);
 bool inclusion (Cercle C1, Cart P);
 bool inclusion (Cercle C1, Cercle C2);
 bool intersection(Cercle C1, Cercle C2);
