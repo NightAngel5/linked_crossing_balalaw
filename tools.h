@@ -1,3 +1,5 @@
+#ifndef TOOLS_H
+#define TOOLS_H
 #define _USE_MATH_DEFINES
 #include <cmath>
 constexpr double epsil_zero(0.5);
@@ -28,3 +30,4 @@ bool inclusion (Cercle C1, Cart P);
 bool inclusion (Cercle C1, Cercle C2);
 bool intersection(Cercle C1, Cercle C2);
 Cart reflect(Cart P, Pol V, State state);
+#endif
