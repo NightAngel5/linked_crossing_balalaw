@@ -1,6 +1,11 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 constexpr double epsil_zero(0.5);
+enum State
+{
+    FORWARD,
+    BACKWARD
+};
 
 struct S2d {
     double x = 0.;
@@ -22,5 +27,4 @@ double distance(Pol P1, Cart P2);
 bool inclusion (Cercle C1, Cart P);
 bool inclusion (Cercle C1, Cercle C2);
 bool intersection(Cercle C1, Cercle C2);
-
-Cart reflect(Cart P, Pol V);
+Cart reflect(Cart P, Pol V, State state);

@@ -61,8 +61,12 @@ bool intersection(Cercle C1, Cercle C2){
     }
 }
 
-Cart reflect(Cart P, Pol V)
+Cart reflect(Cart P, Pol V, State state)
 {
+    if (state=BACKWARD)
+    {
+        V.y = -V.y;
+    }
     Cart V1 = conversion(V);
     Cart R = {P.x + V1.x, P.y + V1.y};
     double alpha = V.y;
