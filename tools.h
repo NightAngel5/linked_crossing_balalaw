@@ -32,8 +32,12 @@ struct Pol
 
 
 struct Cercle {
+    Cercle(Cart C,double R);
+    Cercle(double x, double y, double R);
     Cart C;
     double R;
+    const bool inclusion (const Cart& P);
+    const bool inclusion (const Cercle& C1);
 };
 
 double angleNormalise(double angle);
@@ -41,8 +45,6 @@ double distance(Cart P1, Cart P2);
 double distance(Pol P1, Pol P2);
 double distance(Cart P1, Pol P2);
 double distance(Pol P1, Cart P2);
-bool inclusion (Cercle C1, Cart P);
-bool inclusion (Cercle C1, Cercle C2);
 bool intersection(Cercle C1, Cercle C2);
 Pol reflect(Cart P, Pol V, State state);
 
