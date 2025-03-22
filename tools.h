@@ -9,25 +9,29 @@ enum State
     BACKWARD
 };
 
-struct S2d {
-    double x = 0.;
-    double y = 0.;
-};
+namespace {
+    struct S2d {
+        double x = 0.;
+        double y = 0.;
+    };
+}
 struct Pol;
 struct Cart
 {
     S2d point;
     double x = point.x;
     double y = point.y;
-    Pol toPol();
-    double norme();
+    Cart(double x = 0, double y = 0);
+    Pol toPol() const;
+    double norme() const;
 };
 struct Pol
 {
     S2d point; //x norme et y angle
     double norme = point.x;
     double angle = point.y;
-    Cart toCart();
+    Pol(double norme, double angle);
+    Cart toCart() const;
 };
 
 
@@ -36,14 +40,15 @@ struct Cercle {
     double R;
 };
 
-double angleNormalise(double angle);
-double distance(Cart P1, Cart P2);
-double distance(Pol P1, Pol P2);
-double distance(Cart P1, Pol P2);
-double distance(Pol P1, Cart P2);
+void angleNormalise(double& angle);
+double distance(const Cart& P1,const Cart& P2);
+double distance(const Pol& P1,const Pol& P2);
+double distance(const Cart& P1,const Pol& P2);
+double distance(const Pol& P1,const Cart& P2);
 bool inclusion (Cercle C1, Cart P);
 bool inclusion (Cercle C1, Cercle C2);
 bool intersection(Cercle C1, Cercle C2);
 Pol reflect(Cart P, Pol V, State state);
+Cart& operator+=(Cart& a, const Pol& b);
 
 #endif
