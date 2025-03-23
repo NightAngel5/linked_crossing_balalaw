@@ -32,7 +32,7 @@ bool Particule::lecture(istringstream& data)
 }
 
 
-bool Faiseur::lecture(istringstream &data, const vFaiseurs& V)
+bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur>& V)
 {
     if(data >> x0 >> y0 >> a0 >> d0 >> r0 >> nbe0)  // lecture des attributs avec succès
 	{
@@ -89,13 +89,13 @@ std::vector<Cercle> Faiseur::constructionFaiseur() const
     return v1;
 }
 
-bool collisionFaiseur(const Faiseur & F1, const vFaiseurs V)
+bool collisionFaiseur(const Faiseur & F1, const vFaiseurs& V)
 {
     std::vector<Cercle> v1(F1.constructionFaiseur());
     for (size_t i(0); i<V.size(); ++i)
     {
         std::vector<Cercle> v2(V[i].constructionFaiseur());
-        if (impact(v1,v2))
+        if (impact(v1,v2,i,V.size()))
         {
             return false;
         }
@@ -103,7 +103,7 @@ bool collisionFaiseur(const Faiseur & F1, const vFaiseurs V)
     return true;
 }
 
-bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2)
+bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2,size_t id1,size_t id2)
 {
     for (size_t i(0); i<v1.size(); ++i)
     {
@@ -111,6 +111,7 @@ bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2)
         {
             if (intersection(v1[i],v2[j]))
             {
+                cout<<message::faiseur_element_collision(id1,j,id2,i);
                 return true;
             }
         }

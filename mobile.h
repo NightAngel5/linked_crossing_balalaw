@@ -29,7 +29,7 @@ typedef std::vector<Faiseur> vFaiseurs;
 typedef std::vector<Particule> vParticules;
 
 
-bool collisionFaiseur(const Faiseur& F1, const vFaiseurs V );
+bool collisionFaiseur(const Faiseur& F1, const vFaiseurs& V );
 bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2);
 
 

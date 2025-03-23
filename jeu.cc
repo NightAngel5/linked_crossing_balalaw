@@ -27,6 +27,11 @@ void Jeu::lecture(std::string nom_fichier)
             if (decodage_ligne(data) == false) // détection d'erreur simple
                 exit(EXIT_FAILURE);
         }
+        if (collisionAF()==false)
+        {
+            exit(EXIT_FAILURE);
+        }
+        cout<<message::success();
     }
     else
         exit(EXIT_FAILURE);
@@ -189,3 +194,35 @@ bool decodage_mode(istringstream &data)
     }
     return false;
 }
+
+
+bool collisionAF()
+{
+    vector<Cart> v1(chaine.articulations());
+    for (size_t i(0); i < vfaiseurs.size(); ++i)
+    {
+        vector<Cercle> v2(vfaiseurs[i].constructionFaiseur());
+        if (intouch(v1,v2,i))
+        {
+            return false;
+        }
+        return true;
+    }
+}
+
+bool intouch(vector<Cart>v1, vector<Cercle>v2, size_t a )
+{
+    for (size_t i(0); i<v1.size(); ++i)
+    {
+        for (size_t j(0); j< v2.size(); ++j)
+        {
+            if (v2[j].inclusion(v1[i]))
+            {
+                cout<<message::chaine_articulation_collision(i,a,j);
+                return false;
+            }
+        }
+    }
+    return true;
+}
+            
