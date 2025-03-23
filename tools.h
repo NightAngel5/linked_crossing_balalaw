@@ -50,5 +50,7 @@ double distance(const Pol& P1,const Cart& P2);
 bool intersection(Cercle C1, Cercle C2);
 Pol reflect(Cart P, Pol V, State state);
 Cart& operator+=(Cart& a, const Pol& b);
+Cart operator+(Cart a, const Pol &b);
+Pol opp(const Pol &p);
 
 #endif
