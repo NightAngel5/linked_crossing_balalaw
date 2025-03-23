@@ -24,7 +24,7 @@ void Jeu::lecture(std::string nom_fichier)
             if (line[0] == '#')
                 continue;
             istringstream data(line);
-            if (decodage_ligne(data) == false) // détection d'erreur simple
+            if (decodage_ligne(data) == false)
                 exit(EXIT_FAILURE);
         }
         if (collisionAF()==false)
