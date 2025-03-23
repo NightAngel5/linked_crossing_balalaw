@@ -34,8 +34,8 @@ struct Pol
 
 
 struct Cercle {
-    Cercle(Cart C,double R);
-    Cercle(double x, double y, double R);
+    Cercle(double R, Cart C = Cart(0., 0.));
+    Cercle(double R, double x, double y);
     Cart C;
     double R;
     const bool inclusion (const Cart& P);

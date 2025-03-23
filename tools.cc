@@ -56,12 +56,11 @@ double distance(const Pol& P1, const Cart& P2)
 {
     return distance(P1.toCart(), P2);
 }
-Cercle::Cercle(Cart C, double R):C(C),R(R)
+Cercle::Cercle(double R, Cart C) : C(C), R(R)
 {
 }
-Cercle::Cercle(double x, double y, double R):R(R)
+Cercle::Cercle(double R, double x, double y) : R(R),C(x,y)
 {
-    C=Cart (x,y);
 }
 const bool Cercle::inclusion(const Cart &P)
 {
@@ -81,7 +80,7 @@ const bool Cercle::inclusion (const Cercle& C1){
 }
 
 bool intersection(Cercle C1, Cercle C2){
-    if (C1.inclusion(C2) || C2.inclusion(C1) || distance(C1.C, C2.C)>=C2.R+C1.R+epsil_zero) {
+    if (distance(C1.C, C2.C)>=C2.R+C1.R+epsil_zero) {
         return false;
     } else {
         return true;
