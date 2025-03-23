@@ -109,7 +109,7 @@ bool decodage_nbPart(istringstream &data)
             return false;
         }
         else
-            etat_lecture = PART;
+            etat_lecture = (nbPart==0)?NBFAIS:PART;
             return true;
     }
     return false;
@@ -133,7 +133,7 @@ bool decodage_nbFais(istringstream &data)
 {
     if (data >> nbPart)
     {
-        etat_lecture = FAIS;
+        etat_lecture = (nbFais==0)?NBARTIC:FAIS;;
         return true;
     }
     return false;
@@ -158,7 +158,7 @@ bool decodage_nbArtic(istringstream &data)
 {
     if (data >> nbArtic)
     {
-        etat_lecture = ARTIC;
+        etat_lecture = (nbArtic==0)?MODE:ARTIC;
         return true;
     }
     return false;
@@ -206,8 +206,8 @@ bool collisionAF()
         {
             return false;
         }
-        return true;
     }
+    return true;
 }
 
 bool intouch(vector<Cart>v1, vector<Cercle>v2, size_t a )

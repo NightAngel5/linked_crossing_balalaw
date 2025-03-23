@@ -9,6 +9,7 @@ bool Chaine::lecture(std::istringstream &data)
     if (data>>x>>y)
     {
         Cart art(x, y);
+        cout<<art.point.x<<" "<<art.point.y;
         if (!Cercle(r_max).inclusion(art))
         {
             cout << message::articulation_outside(x, y);

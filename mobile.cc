@@ -7,7 +7,7 @@ bool Particule::lecture(istringstream& data)
 {
     if(data >> x0 >> y0 >> a0 >> d0 >> c0)  // lecture des attributs avec succès
 	{
-        if (Cercle(r_max).inclusion(Cart(x0,y0)))
+        if (!Cercle(r_max).inclusion(Cart(x0,y0)))
         {
             cout<<message::particule_outside(x0,y0);
             std ::exit(EXIT_FAILURE); 
@@ -36,7 +36,7 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur>& V)
 {
     if(data >> x0 >> y0 >> a0 >> d0 >> r0 >> nbe0)  // lecture des attributs avec succès
 	{
-        if (Cercle(r_max).inclusion(Cart(x0,y0)))
+        if (!Cercle(r_max).inclusion(Cart(x0,y0)))
         {
             cout<<message::faiseur_outside(x0,y0);
             std ::exit(EXIT_FAILURE); 

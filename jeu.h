@@ -20,8 +20,7 @@ enum etat
     ARTIC,
     MODE
 };
-
-Chaine chaine;
+static Chaine chaine;
 static vFaiseurs vfaiseurs;
 static vParticules vparticules;
 static etat etat_lecture;
@@ -42,5 +41,6 @@ bool decodage_fais(std::istringstream &data);
 bool decodage_nbArtic(std::istringstream &data);
 bool decodage_artic(std::istringstream &data);
 bool decodage_mode(std::istringstream &data);
-
+bool collisionAF();
+bool intouch(std::vector<Cart> v1, std::vector<Cercle> v2, size_t a );
 #endif

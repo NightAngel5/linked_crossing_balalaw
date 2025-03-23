@@ -17,8 +17,6 @@ struct Pol;
 struct Cart
 {
     S2d point;
-    double x = point.x;
-    double y = point.y;
     Cart(double x = 0, double y = 0);
     Pol toPol() const;
     double norme() const;
@@ -26,8 +24,6 @@ struct Cart
 struct Pol
 {
     S2d point; //x norme et y angle
-    double norme = point.x;
-    double angle = point.y;
     Pol(double norme, double angle);
     Cart toCart() const;
 };

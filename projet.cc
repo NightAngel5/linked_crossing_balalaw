@@ -6,4 +6,5 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     Jeu jeu;
     jeu.lecture(argv[1]);
+    return 0;
 }
