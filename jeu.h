@@ -33,6 +33,7 @@ class Jeu
         Jeu();
         void lecture(std::string nom_fichier);
 };
+bool decodage_ligne(std::istringstream &data);
 bool decodage_score(std::istringstream &data);
 bool decodage_nbPart(std::istringstream &data);
 bool decodage_part(std::istringstream & data);

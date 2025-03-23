@@ -47,5 +47,14 @@
         "streambuf": "cpp",
         "typeinfo": "cpp"
     },
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "makefile.makefilePath": "C:\\Users\\yassi\\OneDrive\\Bureau\\Programmation\\project BA2\\linked_crossing_balalaw\\Makefile",
+    "makefile.makePath": "mingw32-make",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "c:\\Users\\yassi\\OneDrive\\Bureau\\Programmation\\project BA2\\linked_crossing_balalaw",
+            "binaryPath": "c:\\Users\\yassi\\OneDrive\\Bureau\\Programmation\\project BA2\\linked_crossing_balalaw\\prog",
+            "binaryArgs": []
+        }
+    ]
 }
