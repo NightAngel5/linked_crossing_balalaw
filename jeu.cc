@@ -27,7 +27,7 @@ void Jeu::lecture(std::string nom_fichier)
             if (decodage_ligne(data) == false)
                 exit(EXIT_FAILURE);
         }
-        if (collisionAF()==false)
+        if (collisionAF()==true)
         {
             exit(EXIT_FAILURE);
         }
@@ -131,7 +131,7 @@ bool decodage_part(istringstream &data)
 }
 bool decodage_nbFais(istringstream &data)
 {
-    if (data >> nbPart)
+    if (data >> nbFais)
     {
         etat_lecture = (nbFais==0)?NBARTIC:FAIS;;
         return true;
@@ -145,7 +145,7 @@ bool decodage_fais(istringstream &data)
     if (x.lecture(data,vfaiseurs))
     {
         vfaiseurs.push_back(x);
-        if (vparticules.size() == nbFais)
+        if (vfaiseurs.size() == nbFais)
         {
             etat_lecture = NBARTIC;
         }
@@ -168,7 +168,10 @@ bool decodage_artic(istringstream &data)
 {
     if (chaine.lecture(data))
     {
-        etat_lecture = MODE;
+        if (chaine.articulations().size()==nbArtic)
+        {
+            etat_lecture = MODE;
+        }
         return true;
     }
     return false;
@@ -189,7 +192,6 @@ bool decodage_mode(istringstream &data)
         }else{
             return false;
         }
-        etat_lecture = ARTIC;
         return true;
     }
     return false;
@@ -204,14 +206,18 @@ bool collisionAF()
         vector<Cercle> v2(vfaiseurs[i].constructionFaiseur());
         if (intouch(v1,v2,i))
         {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 bool intouch(vector<Cart>v1, vector<Cercle>v2, size_t a )
 {
+    if (v1.size()==0)
+    {
+        return false;
+    }
     for (size_t i(0); i<v1.size(); ++i)
     {
         for (size_t j(0); j< v2.size(); ++j)
@@ -219,10 +225,10 @@ bool intouch(vector<Cart>v1, vector<Cercle>v2, size_t a )
             if (v2[j].inclusion(v1[i]))
             {
                 cout<<message::chaine_articulation_collision(i,a,j);
-                return false;
+                return true;
             }
         }
     }
-    return true;
+    return false;
 }
             

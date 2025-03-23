@@ -36,7 +36,7 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur>& V)
 {
     if(data >> x0 >> y0 >> a0 >> d0 >> r0 >> nbe0)  // lecture des attributs avec succès
 	{
-        if (!Cercle(r_max).inclusion(Cart(x0,y0)))
+        if (!Cercle(r_max).inclusion(Cercle(r0,x0,y0)))
         {
             cout<<message::faiseur_outside(x0,y0);
             std ::exit(EXIT_FAILURE); 
@@ -58,7 +58,7 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur>& V)
             std ::exit(EXIT_FAILURE);
             return false;
         }
-        if (!V.size()){
+        if (V.size()>0){
             if (collisionFaiseur(*this,V)){
                 exit(EXIT_FAILURE);
             }
@@ -70,7 +70,8 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur>& V)
 }
 
 std::vector<Cercle> Faiseur::constructionFaiseur() const
-{   std::vector<Cercle> v1;
+{   
+    vector<Cercle> v1;
     Cart c(x0,y0);
     Pol pas (d0,a0);
     Pol pas1(opp(pas));
@@ -94,13 +95,14 @@ bool collisionFaiseur(const Faiseur & F1, const vFaiseurs& V)
     std::vector<Cercle> v1(F1.constructionFaiseur());
     for (size_t i(0); i<V.size(); ++i)
     {
+
         std::vector<Cercle> v2(V[i].constructionFaiseur());
         if (impact(v1,v2,i,V.size()))
         {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2,size_t id1,size_t id2)
