@@ -4,8 +4,8 @@ using namespace std;
 Jeu::Jeu()
 {
     etat_lecture = SCORE;
-    vFaiseurs.clear();
-    vParticules.clear();
+    vfaiseurs.clear();
+    vparticules.clear();
     score = 0;
     nbFais = 0;
     nbArtic = 0;
