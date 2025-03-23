@@ -108,3 +108,15 @@ Cart &operator+=(Cart &a, const Pol &b)
     a.point.y += m.y;
     return a;
 }
+
+Cart operator+(Cart a, const Pol &b)
+{
+    return a += b;
+}
+
+Pol opp(const Pol &p)
+{
+    double alpha(p.angle + M_PI);
+    angleNormalise(alpha);
+    return Pol(p.norme,alpha);
+}
