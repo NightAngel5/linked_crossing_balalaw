@@ -9,12 +9,10 @@ enum State
     BACKWARD
 };
 
-namespace {
-    struct S2d {
-        double x = 0.;
-        double y = 0.;
-    };
-}
+struct S2d {
+    double x = 0.;
+    double y = 0.;
+};
 struct Pol;
 struct Cart
 {
