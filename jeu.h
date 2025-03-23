@@ -33,13 +33,13 @@ class Jeu
         Jeu();
         void lecture(std::string nom_fichier);
 };
-bool decodage_score(istringstream &data);
-bool decodage_nbPart(istringstream &data);
-bool decodage_part(istringstream &data);
-bool decodage_nbFais(istringstream &data);
-bool decodage_fais(istringstream &data);
-bool decodage_nbArtic(istringstream &data);
-bool decodage_artic(istringstream &data);
-bool decodage_mode(istringstream &data);
+bool decodage_score(std::istringstream &data);
+bool decodage_nbPart(std::istringstream &data);
+bool decodage_part(std::istringstream & data);
+bool decodage_nbFais(std::istringstream &data);
+bool decodage_fais(std::istringstream &data);
+bool decodage_nbArtic(std::istringstream &data);
+bool decodage_artic(std::istringstream &data);
+bool decodage_mode(std::istringstream &data);
 
 #endif
