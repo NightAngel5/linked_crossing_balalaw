@@ -72,6 +72,7 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur>& V)
 std::vector<Cercle> Faiseur::constructionFaiseur() const
 {   
     vector<Cercle> v1;
+    v1.push_back(Cercle(r0,x0,y0));
     Cart c(x0,y0);
     Pol pas (d0,a0);
     Pol pas1(opp(pas));
