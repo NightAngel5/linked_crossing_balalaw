@@ -20,12 +20,7 @@ enum etat
     ARTIC,
     MODE
 };
-static Chaine chaine;
-static vFaiseurs vfaiseurs;
-static vParticules vparticules;
-static etat etat_lecture;
-static unsigned score,nbPart,nbFais,nbArtic;
-static Mode mode;
+
 class Jeu
 {
     public:

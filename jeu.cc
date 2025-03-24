@@ -1,6 +1,13 @@
 #include "jeu.h"
 using namespace std;
 
+static Chaine chaine;
+static vFaiseurs vfaiseurs;
+static vParticules vparticules;
+static etat etat_lecture;
+static unsigned score, nbPart, nbFais, nbArtic;
+static Mode mode;
+
 Jeu::Jeu()
 {
     etat_lecture = SCORE;
@@ -32,6 +39,7 @@ void Jeu::lecture(std::string nom_fichier)
             exit(EXIT_FAILURE);
         }
         cout<<message::success();
+        exit(0);
     }
     else
         exit(EXIT_FAILURE);
