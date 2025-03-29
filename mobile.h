@@ -1,5 +1,7 @@
+// mobile.h, Mohamed Yassine Toujani et Adam Belghith, V2
 #ifndef MOBILE_H
 #define MOBILE_H
+
 #include <sstream>
 #include <vector>
 #include "tools.h"
@@ -7,7 +9,8 @@
 #include "constantes.h"
 
 
-class Particule {
+class Particule 
+{
 public:                                 
     bool lecture(std::istringstream &data);     
 private:
@@ -16,23 +19,19 @@ private:
 };
 
 
-class Faiseur {
-    public:                                
-        bool lecture(std::istringstream &data, const std::vector<Faiseur>& V);
-        std::vector<Cercle> constructionFaiseur() const;    
-    private:
-        double x0,y0,a0,d0,r0;
-        unsigned nbe0;           
-    };
+class Faiseur 
+{
+public:                                
+    bool lecture(std::istringstream &data, const std::vector<Faiseur>& V);
     
-typedef std::vector<Faiseur> vFaiseurs;
-typedef std::vector<Particule> vParticules;
+    std::vector<Cercle> constructionFaiseur() const;    
+private:
+    double x0,y0,a0,d0,r0;
+    unsigned nbe0;           
+};
 
+bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V);
 
-bool collisionFaiseur(const Faiseur& F1, const vFaiseurs& V );
 bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2, size_t a, size_t b);
-
-
-
 
 #endif

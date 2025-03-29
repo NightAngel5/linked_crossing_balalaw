@@ -1,4 +1,6 @@
+// jeu.cc, Mohamed Yassine Toujani et Adam Belghith, V2
 #include "jeu.h"
+
 using namespace std;
 
 static Chaine chaine;
@@ -8,6 +10,7 @@ static etat etat_lecture;
 static unsigned score, nbPart, nbFais, nbArtic;
 static Mode mode;
 
+// Initializes the game state.
 Jeu::Jeu()
 {
     etat_lecture = SCORE;
@@ -20,6 +23,7 @@ Jeu::Jeu()
     mode = CONSTRUCTION;
 }
 
+// Reads and processes game data from a file.
 void Jeu::lecture(std::string nom_fichier)
 {
     ifstream fichier(nom_fichier);
@@ -34,55 +38,56 @@ void Jeu::lecture(std::string nom_fichier)
             if (decodage_ligne(data) == false)
                 exit(EXIT_FAILURE);
         }
-        if (collisionAF()==true)
+        if (collisionAF() == true)
         {
             exit(EXIT_FAILURE);
         }
-        cout<<message::success();
+        cout << message::success();
         exit(0);
     }
     else
         exit(EXIT_FAILURE);
 }
 
+// Decodes a line of game data based on the current reading state (etat_lecture).
 bool decodage_ligne(istringstream &data)
 {
     switch (etat_lecture)
     {
-    case SCORE: // lecture du nombre de livreurs
+    case SCORE: // Reads the initial score
         if (decodage_score(data) == false)
             return false;
         break;
 
-    case NBPART: // ajout dans le vector en cas de succès
+    case NBPART: // Reads the number of particles
         if (decodage_nbPart(data) == false)
             return false;
         break;
 
-    case PART: // lecture du nombre de véhicules
+    case PART: // Reads individual particle data
         if (decodage_part(data) == false)
             return false;
         break;
 
-    case NBFAIS: // ajout dans le vector en cas de succès
+    case NBFAIS: // Reads the number of Faiseurs
         if (decodage_nbFais(data) == false)
             return false;
         break;
 
-    case FAIS: // lecture du nombre de livraisons
+    case FAIS: // Reads individual Faiseur data
         if (decodage_fais(data) == false)
             return false;
         break;
 
-    case NBARTIC: // ajout dans le vector en cas de succès
+    case NBARTIC: // Reads the number of articulations
         if (decodage_nbArtic(data) == false)
             return false;
         break;
-    case ARTIC: // ajout dans le vector en cas de succès
+    case ARTIC: // Reads individual articulation data
         if (decodage_artic(data) == false)
             return false;
         break;
-    case MODE: // ajout dans le vector en cas de succès
+    case MODE: // Reads the game mode
         if (decodage_mode(data) == false)
             return false;
         break;
@@ -92,21 +97,24 @@ bool decodage_ligne(istringstream &data)
     return true;
 }
 
+// Reads and validates the score value.
 bool decodage_score(istringstream &data)
 {
     if (data >> score)
     {
-        if (score<=0 or score>score_max)
+        if (score <= 0 or score > score_max)
         {
             cout << message::score_outside(score);
             return false;
-        }else
+        }
+        else
             etat_lecture = NBPART;
-            return true;
+        return true;
     }
     return false;
 }
 
+// Reads and validates the number of particles.
 bool decodage_nbPart(istringstream &data)
 {
     if (data >> nbPart)
@@ -117,19 +125,20 @@ bool decodage_nbPart(istringstream &data)
             return false;
         }
         else
-            etat_lecture = (nbPart==0)?NBFAIS:PART;
-            return true;
+            etat_lecture = (nbPart == 0) ? NBFAIS : PART;
+        return true;
     }
     return false;
 }
 
+// Reads and adds a particle.
 bool decodage_part(istringstream &data)
 {
     Particule x;
     if (x.lecture(data))
     {
         vparticules.push_back(x);
-        if (vparticules.size()==nbPart)
+        if (vparticules.size() == nbPart)
         {
             etat_lecture = NBFAIS;
         }
@@ -137,20 +146,23 @@ bool decodage_part(istringstream &data)
     }
     return false;
 }
+
+// Reads and validates the number of Faiseurs.
 bool decodage_nbFais(istringstream &data)
 {
     if (data >> nbFais)
     {
-        etat_lecture = (nbFais==0)?NBARTIC:FAIS;;
+        etat_lecture = (nbFais == 0) ? NBARTIC : FAIS;
         return true;
     }
     return false;
 }
 
+// Reads and adds a Faiseur.
 bool decodage_fais(istringstream &data)
 {
     Faiseur x;
-    if (x.lecture(data,vfaiseurs))
+    if (x.lecture(data, vfaiseurs))
     {
         vfaiseurs.push_back(x);
         if (vfaiseurs.size() == nbFais)
@@ -162,21 +174,23 @@ bool decodage_fais(istringstream &data)
     return false;
 }
 
+// Reads and validates the number of articulations.
 bool decodage_nbArtic(istringstream &data)
 {
     if (data >> nbArtic)
     {
-        etat_lecture = (nbArtic==0)?MODE:ARTIC;
+        etat_lecture = (nbArtic == 0) ? MODE : ARTIC;
         return true;
     }
     return false;
 }
 
+// Reads and adds an articulation.
 bool decodage_artic(istringstream &data)
 {
     if (chaine.lecture(data))
     {
-        if (chaine.articulations().size()==nbArtic)
+        if (chaine.articulations().size() == nbArtic)
         {
             etat_lecture = MODE;
         }
@@ -185,19 +199,22 @@ bool decodage_artic(istringstream &data)
     return false;
 }
 
+// Reads and sets the game mode.
 bool decodage_mode(istringstream &data)
 {
     string x;
     if (data >> x)
     {
-        if (x=="CONSTRUCTION")
+        if (x == "CONSTRUCTION")
         {
             mode = CONSTRUCTION;
         }
-        else if (x=="GUIDAGE")
+        else if (x == "GUIDAGE")
         {
             mode = GUIDAGE;
-        }else{
+        }
+        else
+        {
             return false;
         }
         return true;
@@ -205,14 +222,14 @@ bool decodage_mode(istringstream &data)
     return false;
 }
 
-
+// Checks for collisions between articulations and Faiseurs.
 bool collisionAF()
 {
     vector<Cart> v1(chaine.articulations());
     for (size_t i(0); i < vfaiseurs.size(); ++i)
     {
         vector<Cercle> v2(vfaiseurs[i].constructionFaiseur());
-        if (intouch(v1,v2,i))
+        if (intouch(v1, v2, i))
         {
             return true;
         }
@@ -220,23 +237,23 @@ bool collisionAF()
     return false;
 }
 
-bool intouch(vector<Cart>v1, vector<Cercle>v2, size_t a )
+// Checks for specific articulation-Faiseur collisions.
+bool intouch(vector<Cart> v1, vector<Cercle> v2, size_t a)
 {
-    if (v1.size()==0)
+    if (v1.size() == 0)
     {
         return false;
     }
-    for (size_t i(0); i<v1.size(); ++i)
+    for (size_t i(0); i < v1.size(); ++i)
     {
-        for (size_t j(0); j< v2.size(); ++j)
+        for (size_t j(0); j < v2.size(); ++j)
         {
             if (v2[j].inclusion(v1[i]))
             {
-                cout<<message::chaine_articulation_collision(i,a,j);
+                cout << message::chaine_articulation_collision(i, a, j);
                 return true;
             }
         }
     }
     return false;
 }
-            

@@ -1,3 +1,4 @@
+// projet.cc, Mohamed Yassine Toujani et Adam Belghith, V1
 #include "jeu.h"
 
 int main(int argc, char *argv[])
