@@ -4,6 +4,7 @@
 #define _USE_MATH_DEFINES
 
 #include <cmath>
+#include "graphic.h"
 
 constexpr double epsil_zero(0.5);
 

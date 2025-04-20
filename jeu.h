@@ -14,6 +14,13 @@
 typedef std::vector<Faiseur> vFaiseurs;
 typedef std::vector<Particule> vParticules;
 
+enum Status
+{
+    ONGOING,
+    WON,
+    LOST
+};
+
 enum etat
 {
     SCORE,

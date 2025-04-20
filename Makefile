@@ -1,16 +1,27 @@
 # Definitions de macros
-
+OUT = projet
 CXX     = g++
 CXXFLAGS = -g -std=c++11
+LINKING = `pkg-config --cflags gtkmm-4.0`
+LDLIBS = `pkg-config --libs gtkmm-4.0`
 CXXFILES = projet.cc jeu.cc chaine.cc mobile.cc message.cc tools.cc
 OFILES = projet.o jeu.o chaine.o mobile.o message.o tools.o
 
 # Definition de la premiere regle
-
-prog: $(OFILES)
-	$(CXX) $(OFILES) -o projet
-
+all: $(OUT)
 # Definitions de cibles particulieres
+clean:
+	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
+	@/bin/rm -f *.o *.x *.cc~ *.h~ $(OUT)
+	
+graphic.o: graphic.cc graphic_gui.h graphic.h
+	$(CXX) $(CXXFLAGS) $(LINKING) -c $< -o $@ 
+
+gui.o: gui.cc graphic_gui.h graphic.h gui.h jeu.h tools.h constantes.h
+	$(CXX) $(CXXFLAGS) $(LINKING) -c $< -o $@ 
+
+projet.o: projet.cc gui.h jeu.h graphic.h
+	$(CXX) $(CXXFLAGS) $(LINKING) -c $< -o $@ 
 
 depend:
 	@echo " *** MISE A JOUR DES DEPENDANCES ***"
@@ -19,10 +30,9 @@ depend:
 	  egrep -v "/usr/include" \
 	 ) >Makefile.new
 	@mv Makefile.new Makefile
+$(OUT): $(OFILES)
+	$(CXX) $(CXXFLAGS) $(LINKING) $(OFILES) -o $@ $(LDLIBS)
 
-clean:
-	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
-	@/bin/rm -f *.o *.x *.cc~ *.h~ projet
 
 #
 # -- Regles de dependances generees automatiquement
