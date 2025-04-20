@@ -87,6 +87,21 @@ double distance(const Cart &P1, const Cart &P2)
     return sqrt(pow((P1.point.x) - (P2.point.x), 2) + pow((P1.point.y) - (P2.point.y), 2));
 }
 
+double distance(const Pol &P1, const Pol &P2)
+{
+    return distance(P1.toCart(), P2.toCart());
+}
+
+double distance(const Cart &P1, const Pol &P2)
+{
+    return distance(P1, P2.toCart());
+}
+
+double distance(const Pol &P1, const Cart &P2)
+{
+    return distance(P2, P1);
+}
+
 // Checks if two circles intersect.
 bool intersection(Cercle C1, Cercle C2)
 {
@@ -134,4 +149,9 @@ Pol opp(const Pol &p)
     double alpha(p.point.y + M_PI);
     angleNormalise(alpha);
     return Pol(p.point.x, alpha);
+}
+
+void drawCircle(Cercle C, Color C1, double width, Remplissage Remp, Color C2)
+{
+    draw_circle(C.C.point.x, C.C.point.y, C.R, width, C1, Remp, C2);
 }
