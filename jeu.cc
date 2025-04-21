@@ -185,6 +185,7 @@ bool Jeu::decodage_artic(istringstream &data)
     {
         if (chaine.articulations().size() == nbArtic)
         {
+            chaine.pointOppose();
             etat_lecture = MODE;
         }
         return true;

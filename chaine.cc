@@ -4,11 +4,6 @@
 
 using namespace std;
 
-Cart Chaine::pointOppose(Cart P)
-{
-    return Cart();
-}
-
 // Reads and validates articulation points for the chain.
 bool Chaine::lecture(std::istringstream &data)
 {
@@ -42,6 +37,13 @@ bool Chaine::lecture(std::istringstream &data)
     {
         return false;
     }
+}
+
+void Chaine::pointOppose()
+{
+    Pol P = opp(articulations_[0].toPol());
+    P.point.x = r_max;
+    point_opp = P.toCart();
 }
 
 // Returns the list of articulation points of the chain.
