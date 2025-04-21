@@ -42,6 +42,10 @@ private:
     etat etat_lecture;
     unsigned score, nbPart, nbFais, nbArtic;
     Mode mode;
+    bool lecture_ok_;
+
+    bool impasse_faiseur(size_t j);
+
     bool decodage_ligne(std::istringstream &data);
 
     bool decodage_score(std::istringstream &data);
@@ -66,9 +70,15 @@ private:
 
 public:
     Jeu();
-    void lecture(std::string nom_fichier);
+    bool lecture(std::string nom_fichier);
     void updatejeu();
     void draw();
+    void reset();
+    bool lecture_ok();
+    unsigned get_score();
+    unsigned get_nb_part();
+    unsigned get_nb_fais();
+    unsigned get_nb_artic();
 };
 
 #endif

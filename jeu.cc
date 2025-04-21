@@ -6,18 +6,11 @@ using namespace std;
 // Initializes the game state.
 Jeu::Jeu()
 {
-    etat_lecture = SCORE;
-    vfaiseurs.clear();
-    vparticules.clear();
-    score = 0;
-    nbFais = 0;
-    nbArtic = 0;
-    nbPart = 0;
-    mode = CONSTRUCTION;
+    reset();
 }
 
 // Reads and processes game data from a file.
-void Jeu::lecture(std::string nom_fichier)
+bool Jeu::lecture(std::string nom_fichier)
 {
     ifstream fichier(nom_fichier);
     if (!fichier.fail())
@@ -29,17 +22,40 @@ void Jeu::lecture(std::string nom_fichier)
                 continue;
             istringstream data(line);
             if (decodage_ligne(data) == false)
-                exit(EXIT_FAILURE);
+                return false;
         }
         if (collisionAF() == true)
         {
-            exit(EXIT_FAILURE);
+            return false;
         }
+        set_status();
+        lecture_ok_ = true;
         cout << message::success();
-        exit(0);
+        return true;
     }
     else
-        exit(EXIT_FAILURE);
+        return false;
+}
+
+bool Jeu::impasse_faiseur(size_t j)
+{
+    Cart P = (vfaiseurs[j].get_x0(), vfaiseurs[j].get_y0());
+    Pol vect(vfaiseurs[j].get_d0(), vfaiseurs[j].get_a0());
+    P += vect;
+    Cercle tete(vfaiseurs[j].get_r0(), P);
+    for (size_t i = 0; i < vfaiseurs.size(); i++)
+    {
+        if (i == j)
+            continue;
+        for (auto k : vfaiseurs[i].constructionFaiseur())
+        {
+            if (intersection(tete, k))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 // Decodes a line of game data based on the current reading state (etat_lecture).
@@ -264,4 +280,42 @@ void Jeu::draw()
         i.draw();
     }
     chaine.draw();
+}
+
+void Jeu::reset()
+{
+    etat_lecture = SCORE;
+    vfaiseurs.clear();
+    vparticules.clear();
+    score = 0;
+    nbFais = 0;
+    nbArtic = 0;
+    nbPart = 0;
+    mode = CONSTRUCTION;
+    status = ONGOING;
+    lecture_ok_ = false;
+}
+bool Jeu::lecture_ok()
+{
+    return lecture_ok_;
+}
+
+unsigned Jeu::get_score()
+{
+    return score;
+}
+
+unsigned Jeu::get_nb_part()
+{
+    return nbPart;
+}
+
+unsigned Jeu::get_nb_fais()
+{
+    return nbFais;
+}
+
+unsigned Jeu::get_nb_artic()
+{
+    return nbArtic;
 }

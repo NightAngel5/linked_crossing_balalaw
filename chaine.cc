@@ -14,21 +14,21 @@ bool Chaine::lecture(std::istringstream &data)
         if (!Cercle(r_max).inclusion(art))
         {
             cout << message::articulation_outside(x, y);
-            exit(EXIT_FAILURE);
+            return false;
         }
         else if (articulations_.size() == 0)
         {
             if (art.norme() < r_max - r_capture + epsil_zero)
             {
                 cout << message::chaine_racine(x, y);
-                exit(EXIT_FAILURE);
+                return false;
             }
         }
         else if (distance(articulations_[articulations_.size() - 1],
                           art) > r_capture - epsil_zero)
         {
             cout << message::chaine_max_distance(articulations_.size() - 1);
-            exit(EXIT_FAILURE);
+            return false;
         }
         articulations_.push_back(art);
         return true;
@@ -67,4 +67,9 @@ void Chaine::draw()
         drawCircle(Cercle(r_capture, articulations_[articulations_.size()]), RED);
         drawCircle(Cercle(r_viz, point_opp), BLACK);
     }
+}
+
+bool Chaine::tete_arrivee()
+{
+    return articulations_.size() && distance(articulations_[articulations_.size()], point_opp) < epsil_zero;
 }

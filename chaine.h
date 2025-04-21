@@ -19,6 +19,7 @@ public:
     void pointOppose();
     std::vector<Cart> articulations();
     void draw();
+    bool tete_arrivee();
 };
 
 #endif

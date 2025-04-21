@@ -11,28 +11,31 @@
 class mobile
 {
 protected:
-    double x0,y0,a0,d0;
+    double x0, y0, a0, d0;
 };
 
-class Particule: public mobile
+class Particule : public mobile
 {
-public:                                 
+public:
     bool lecture(std::istringstream &data);
-    void draw();  
+    void draw();
+    Particule move();
+
 private:
-    unsigned c0;                   
+    unsigned c0;
 };
 
-
-class Faiseur: public mobile 
+class Faiseur : public mobile
 {
-public:                                
-    bool lecture(std::istringstream &data, const std::vector<Faiseur>& V);
-    std::vector<Cercle> constructionFaiseur() const;  
-    void draw();  
+public:
+    bool lecture(std::istringstream &data, const std::vector<Faiseur> &V);
+    std::vector<Cercle> constructionFaiseur() const;
+    void draw();
+    void move();
+
 private:
     double r0;
-    unsigned nbe0;           
+    unsigned nbe0;
 };
 
 bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V);
