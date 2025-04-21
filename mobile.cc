@@ -4,12 +4,9 @@
 
 using namespace std;
 
+Mobile::Mobile(double x0, double y0, double a0, double d0) : x0(x0), y0(y0), a0(a0), d0(d0) {}
 
-
-
-Mobile::Mobile(double x0,double y0,double a0,double d0): x0(x0), y0(y0), a0(a0), d0(d0) {}
-
-Particule::Particule(double x0,double y0,double a0,double d0,unsigned c0): Mobile(x0,y0,a0,d0), c0(c0) {}
+Particule::Particule(double x0, double y0, double a0, double d0, unsigned c0) : Mobile(x0, y0, a0, d0), c0(c0) {}
 
 // Reads and validates attributes for a particle.
 bool Particule::lecture(istringstream &data)
@@ -19,7 +16,6 @@ bool Particule::lecture(istringstream &data)
         if (!Cercle(r_max).inclusion(Cart(x0, y0)))
         {
             cout << message::particule_outside(x0, y0);
-            std ::exit(EXIT_FAILURE);
             return false;
         }
         else if (!(-M_PI <= a0 && a0 <= M_PI))
@@ -29,13 +25,11 @@ bool Particule::lecture(istringstream &data)
         else if (!(0 <= d0 && d0 <= d_max))
         {
             cout << message::mobile_displacement(d0);
-            std ::exit(EXIT_FAILURE);
             return false;
         }
         else if (!(0 <= c0 && c0 < time_to_split))
         {
             cout << message::particule_counter(c0);
-            std ::exit(EXIT_FAILURE);
             return false;
         }
         return true;
@@ -49,9 +43,19 @@ void Particule::draw()
     drawCircle(Cercle(r_viz, x0, y0), GREEN, 0.7, PLEIN, CYAN);
 }
 
+Particule Particule::move()
+{
+    Cart P(x0, y0);
+    Pol vect(d0, a0);
+    if (!Cercle(r_max).inclusion(Cercle(r_viz, (P + vect))))
+    {
+        vect = reflect(P, vect, FORWARD);
+    }
+    P += vect;
+    return Particule(P.point.x, P.point.y, vect.point.y, vect.point.x, c0 + 1);
+}
 
-
-Faiseur::Faiseur(double x0,double y0,double a0,double d0,unsigned r0, unsigned nbe0):Mobile(x0,y0,a0,d0), r0(r0), nbe0(nbe0){}
+Faiseur::Faiseur(double x0, double y0, double a0, double d0, unsigned r0, unsigned nbe0) : Mobile(x0, y0, a0, d0), r0(r0), nbe0(nbe0) {}
 // Reads and validates attributes for a Faiseur + checking for collisions.
 bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
 {
@@ -60,7 +64,6 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
         if (!Cercle(r_max).inclusion(Cercle(r0, x0, y0)))
         {
             cout << message::faiseur_outside(x0, y0);
-            std ::exit(EXIT_FAILURE);
             return false;
         }
         else if (!(-M_PI <= a0 && a0 <= M_PI))
@@ -70,26 +73,23 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
         else if (!(0 <= d0 && d0 <= d_max))
         {
             cout << message::mobile_displacement(d0);
-            std ::exit(EXIT_FAILURE);
             return false;
         }
         else if (!(r_min_faiseur <= r0 && r0 <= r_max_faiseur))
         {
             cout << message::faiseur_radius(r0);
-            std ::exit(EXIT_FAILURE);
             return false;
         }
         else if (nbe0 <= 0)
         {
             cout << message::faiseur_nbe(nbe0);
-            std ::exit(EXIT_FAILURE);
             return false;
         }
         if (V.size() > 0)
         {
             if (collisionFaiseur(*this, V))
             {
-                exit(EXIT_FAILURE);
+                return false;
             }
         }
         return true;
@@ -98,7 +98,7 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
         return false;
 }
 
-// Constructs the faiseurs's circle based on the head.
+// Constructs the faiseurs's circles based on the head.
 std::vector<Cercle> Faiseur::constructionFaiseur() const
 {
     vector<Cercle> v1;
@@ -127,6 +127,21 @@ void Faiseur::draw()
     {
         drawCircle(Cercle(r0, x0, y0), BLUE, 0.7);
     }
+}
+
+void Faiseur::move()
+{
+    Cart P(x0, y0);
+    Pol vect(d0, a0);
+    if (!Cercle(r_max).inclusion(Cercle(r0, (P + vect))))
+    {
+        vect = reflect(P, vect, FORWARD);
+    }
+    P += vect;
+    x0 = P.point.x;
+    y0 = P.point.y;
+    d0 = vect.point.x;
+    a0 = vect.point.y;
 }
 
 // Checks if a Faiseur collides with any other Faiseur in a list.

@@ -39,8 +39,8 @@ My_window::My_window(string file_name)
                  Gtk::Label("particules:"),
                  Gtk::Label("faiseurs:"),
                  Gtk::Label("articulations:")}),
-      previous_file_name(file_name)
-      // ici éventuelle initialisation de l'attribut pour l'accès au jeu
+      previous_file_name(file_name),
+      jeu()
 {
     set_title("Linked-Crossing Challenge");
     set_child(main_box);
@@ -71,17 +71,17 @@ void My_window::set_commands()
     }
 
     buttons[B_EXIT].signal_clicked().connect(sigc::mem_fun(*this,
-                                                      &My_window::exit_clicked));
+                                                           &My_window::exit_clicked));
     buttons[B_OPEN].signal_clicked().connect(sigc::mem_fun(*this,
-                                                      &My_window::open_clicked));
+                                                           &My_window::open_clicked));
     buttons[B_SAVE].signal_clicked().connect(sigc::mem_fun(*this,
-                                                      &My_window::save_clicked));
+                                                           &My_window::save_clicked));
     buttons[B_RESTART].signal_clicked().connect(sigc::mem_fun(*this,
-                                                      &My_window::restart_clicked));
+                                                              &My_window::restart_clicked));
     buttons[B_START].signal_clicked().connect(sigc::mem_fun(*this,
-                                                      &My_window::start_clicked));
+                                                            &My_window::start_clicked));
     buttons[B_STEP].signal_clicked().connect(sigc::mem_fun(*this,
-                                                      &My_window::step_clicked));
+                                                           &My_window::step_clicked));
     checks[0].set_active(true);
     checks[0].set_group(checks[1]);
     checks[0].signal_toggled().connect(sigc::mem_fun(*this,
@@ -124,7 +124,7 @@ void My_window::start_clicked()
         buttons[B_START].set_label("start");
         buttons[B_STEP].set_sensitive(true);
     }
-    else // if (appel pour obtenir le statut du jeu == ON_GOING) // voir jeu.h
+    else if (jeu.get_status() == ONGOING)
     {
         loop_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this,
                                                                  &My_window::loop),
@@ -167,17 +167,17 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
     {
     case '1':
         // remplacer affichage par votre code
-		cout << keyval <<"  " << __func__ << endl;
+        cout << keyval << "  " << __func__ << endl;
 
         return true;
     case 's':
         // remplacer affichage par votre code
-		cout << keyval <<"  " << __func__ << endl;
+        cout << keyval << "  " << __func__ << endl;
 
         return true;
     case 'r':
         // remplacer affichage par votre code
-		cout << keyval <<"  " << __func__ << endl;
+        cout << keyval << "  " << __func__ << endl;
 
         return true;
     default:
@@ -238,16 +238,16 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
     case OPEN:
         if (file_name != "")
         {
-	        // remplacer affichage par votre code
-			cout << file_name <<"  " << __func__ << endl;
+            // remplacer affichage par votre code
+            cout << file_name << "  " << __func__ << endl;
             dialog->hide();
         }
         break;
     case SAVE:
         if (file_name != "")
         {
-	        // remplacer affichage par votre code
-			cout << file_name <<"  " << __func__ << endl;
+            // remplacer affichage par votre code
+            cout << file_name << "  " << __func__ << endl;
             dialog->hide();
         }
         break;
@@ -267,22 +267,22 @@ bool My_window::loop()
 }
 void My_window::update()
 {
-	// remplacer affichage par votre code
-	cout <<  __func__ << endl;
-	
+    // remplacer affichage par votre code
+    cout << __func__ << endl;
+
     update_infos();
     drawing.queue_draw();
 
-    //~ if (appel pour obtenir le statut du jeu !== ON_GOING) // voir jeu.h 
+    //~ if (appel pour obtenir le statut du jeu !== ON_GOING) // voir jeu.h
     //~ {
-		//~ ...
-        //~ buttons[B_SAVE].set_sensitive(false);
-        //~ buttons[B_START].set_sensitive(false);
-        //~ buttons[B_STEP].set_sensitive(false);
-        //~ checks[0].set_active(true);
-        //~ checks[0].set_sensitive(false);
-        //~ checks[1].set_sensitive(false);
-	//~ }   
+    //~ ...
+    //~ buttons[B_SAVE].set_sensitive(false);
+    //~ buttons[B_START].set_sensitive(false);
+    //~ buttons[B_STEP].set_sensitive(false);
+    //~ checks[0].set_active(true);
+    //~ checks[0].set_sensitive(false);
+    //~ checks[1].set_sensitive(false);
+    //~ }
 }
 
 void My_window::set_infos()
@@ -301,15 +301,10 @@ void My_window::set_infos()
 }
 void My_window::update_infos()
 {
- 	// remplacer affichage par votre code
-	cout <<  __func__ << endl;
-
-    {
-        for (auto &value : info_value)
-        {
-            value.set_text("0");
-        }
-    }
+    info_value[0].set_text(to_string(jeu.get_score()));
+    info_value[1].set_text(to_string(jeu.get_nb_part()));
+    info_value[2].set_text(to_string(jeu.get_nb_fais()));
+    info_value[3].set_text(to_string(jeu.get_nb_artic()));
 }
 
 void My_window::set_drawing()
@@ -328,8 +323,10 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr,
     cr->translate(width / 2, height / 2);
     cr->scale(side / (2 * r_max), -side / (2 * r_max));
 
-	// remplacer affichage par votre code
-	cout <<  __func__ << endl;
+    if (jeu.lecture_ok())
+    {
+        jeu.draw();
+    }
 }
 
 void My_window::set_mouse_controller()
@@ -353,7 +350,7 @@ void My_window::set_mouse_controller()
     drawing.add_controller(move);
 }
 
-// cette fonction convertit l'entrée pos contenant les coordonnées (x,y) de la souris 
+// cette fonction convertit l'entrée pos contenant les coordonnées (x,y) de la souris
 // dans l'espace GTKmm vers l'espace du Modèle => sortie de la fonction.
 S2d My_window::scaled(S2d const &pos) const
 {
@@ -366,27 +363,40 @@ S2d My_window::scaled(S2d const &pos) const
 
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
-	// remplacer affichage par votre code
-	cout <<  __func__ << endl;
+    // remplacer affichage par votre code
+    cout << __func__ << endl;
 }
 void My_window::on_drawing_right_click(int n_press, double x, double y)
 {
-	// remplacer affichage par votre code
-	cout <<  __func__ << endl;
+    // remplacer affichage par votre code
+    cout << __func__ << endl;
 }
 void My_window::on_drawing_move(double x, double y)
 {
-	// remplacer affichage par votre code
-	cout <<  __func__ << endl;
+    // remplacer affichage par votre code
+    cout << __func__ << endl;
 }
-
 
 void My_window::set_jeu(string file_name)
 {
-	// remplacer affichage par votre code
-	cout <<  __func__ << endl;
-
-    //~ if (à compléter pour cas d'échec de lecture)
+    if (jeu.lecture(file_name))
+    {
+        buttons[2].set_sensitive(true);
+        buttons[4].set_sensitive(true);
+        buttons[5].set_sensitive(true);
+        checks[0].set_sensitive(true);
+        checks[1].set_sensitive(true);
+        switch (jeu.get_mode())
+        {
+        case CONSTRUCTION:
+            checks[0].set_active(true);
+            break;
+        case GUIDAGE:
+            checks[1].set_active(true);
+            break;
+        }
+    }
+    else
     {
         buttons[2].set_sensitive(false);
         buttons[4].set_sensitive(false);
@@ -394,25 +404,8 @@ void My_window::set_jeu(string file_name)
         checks[0].set_active(true);
         checks[0].set_sensitive(false);
         checks[1].set_sensitive(false);
-        // éventuelle mise à jour de l'attribut jeu
+        jeu.reset();
     }
-    //~ else // cas de succès de lecture
-    //~ {
-        //~ buttons[2].set_sensitive(true);
-        //~ buttons[4].set_sensitive(true);
-        //~ buttons[5].set_sensitive(true);
-        //~ checks[0].set_sensitive(true);
-        //~ checks[1].set_sensitive(true);
-        //~ switch (appel pour obtenir le statut du jeu ) // voir jeu.h
-        //~ {
-        //~ case CONSTRUCTION:
-            //~ checks[0].set_active(true);
-            //~ break;
-        //~ case GUIDAGE:
-            //~ checks[1].set_active(true);
-            //~ break;
-        //~ }
-    //~ }
     update_infos();
     drawing.queue_draw();
 }

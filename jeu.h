@@ -42,6 +42,10 @@ private:
     etat etat_lecture;
     unsigned score, nbPart, nbFais, nbArtic;
     Mode mode;
+    bool lecture_ok_;
+
+    bool impasse_faiseur(size_t j);
+
     Status statut;
     Mode get_mode() { return mode; }
     Status get_statut() { return statut; }
@@ -70,8 +74,15 @@ private:
 
 public:
     Jeu();
-    void lecture(std::string nom_fichier);
+    bool lecture(std::string nom_fichier);
     void updateJeu();
+    void draw();
+    void reset();
+    bool lecture_ok();
+    unsigned get_score();
+    unsigned get_nb_part();
+    unsigned get_nb_fais();
+    unsigned get_nb_artic();
 };
 
 #endif

@@ -6,18 +6,11 @@ using namespace std;
 // Initializes the game state.
 Jeu::Jeu()
 {
-    etat_lecture = SCORE;
-    vfaiseurs.clear();
-    vparticules.clear();
-    score = 0;
-    nbFais = 0;
-    nbArtic = 0;
-    nbPart = 0;
-    mode = CONSTRUCTION;
+    reset();
 }
 
 // Reads and processes game data from a file.
-void Jeu::lecture(std::string nom_fichier)
+bool Jeu::lecture(std::string nom_fichier)
 {
     ifstream fichier(nom_fichier);
     if (!fichier.fail())
@@ -29,17 +22,40 @@ void Jeu::lecture(std::string nom_fichier)
                 continue;
             istringstream data(line);
             if (decodage_ligne(data) == false)
-                exit(EXIT_FAILURE);
+                return false;
         }
         if (collisionAF() == true)
         {
-            exit(EXIT_FAILURE);
+            return false;
         }
+        set_status();
+        lecture_ok_ = true;
         cout << message::success();
-        exit(0);
+        return true;
     }
     else
-        exit(EXIT_FAILURE);
+        return false;
+}
+
+bool Jeu::impasse_faiseur(size_t j)
+{
+    Cart P = (vfaiseurs[j].get_x0(), vfaiseurs[j].get_y0());
+    Pol vect(vfaiseurs[j].get_d0(), vfaiseurs[j].get_a0());
+    P += vect;
+    Cercle tete(vfaiseurs[j].get_r0(), P);
+    for (size_t i = 0; i < vfaiseurs.size(); i++)
+    {
+        if (i == j)
+            continue;
+        for (auto k : vfaiseurs[i].constructionFaiseur())
+        {
+            if (intersection(tete, k))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 // Decodes a line of game data based on the current reading state (etat_lecture).
@@ -185,6 +201,7 @@ bool Jeu::decodage_artic(istringstream &data)
     {
         if (chaine.articulations().size() == nbArtic)
         {
+            chaine.pointOppose();
             etat_lecture = MODE;
         }
         return true;
@@ -251,36 +268,93 @@ bool Jeu::intouch(vector<Cart> v1, vector<Cercle> v2, size_t a)
     return false;
 }
 
+void Jeu::draw()
+{
+    drawCircle(Cercle(r_max, Cart(0, 0)), GREEN);
+    for (auto i : vfaiseurs)
+    {
+        i.draw();
+    }
+    for (auto i : vparticules)
+    {
+        i.draw();
+    }
+    chaine.draw();
+}
+
+void Jeu::reset()
+{
+    etat_lecture = SCORE;
+    vfaiseurs.clear();
+    vparticules.clear();
+    score = 0;
+    nbFais = 0;
+    nbArtic = 0;
+    nbPart = 0;
+    mode = CONSTRUCTION;
+    status = ONGOING;
+    lecture_ok_ = false;
+}
+bool Jeu::lecture_ok()
+{
+    return lecture_ok_;
+}
+
+unsigned Jeu::get_score()
+{
+    return score;
+}
+
+unsigned Jeu::get_nb_part()
+{
+    return nbPart;
+}
+
+unsigned Jeu::get_nb_fais()
+{
+    return nbFais;
+}
+
+unsigned Jeu::get_nb_artic()
+{
+    return nbArtic;
+}
 
 void Jeu::updateJeu()
 {
-    //update particules
+    // update particules
     vParticules V;
-    for (size_t(i);i<vparticules.size();++i)
+    for (size_t(i); i < vparticules.size(); ++i)
     {
-        if (nbPart==nb_particule_max) { nbPart-=1; }
-        else if ( nbPart< nb_particule_max and vparticules[i].get_c0() < time_to_split  )
+        if (nbPart == nb_particule_max)
+        {
+            nbPart -= 1;
+        }
+        else if (nbPart < nb_particule_max and vparticules[i].get_c0() < time_to_split)
         {
             V.push_back(vparticules[i].move());
-        } else if ( nbPart< nb_particule_max and vparticules[i].get_c0() == time_to_split  )
+        }
+        else if (nbPart < nb_particule_max and vparticules[i].get_c0() == time_to_split)
         {
             V.push_back(Particule(vparticules[i].get_x0(),
-                                    vparticules[i].get_y0(),
-                                    vparticules[i].get_a0()+delta_split,
-                                    vparticules[i].get_d0()*coef_split,0).move());
-            V[V.size()-1].set_c0(0);
+                                  vparticules[i].get_y0(),
+                                  vparticules[i].get_a0() + delta_split,
+                                  vparticules[i].get_d0() * coef_split, 0)
+                            .move());
+            V[V.size() - 1].set_c0(0);
             V.push_back(Particule(vparticules[i].get_x0(),
-                                    vparticules[i].get_y0(),
-                                    vparticules[i].get_a0()-delta_split,
-                                    vparticules[i].get_d0()*coef_split,0).move());
-            V[V.size()-1].set_c0(0);
-            nbPart+=1;
+                                  vparticules[i].get_y0(),
+                                  vparticules[i].get_a0() - delta_split,
+                                  vparticules[i].get_d0() * coef_split, 0)
+                            .move());
+            V[V.size() - 1].set_c0(0);
+            nbPart += 1;
         }
     }
-    vparticules=V;
+    vparticules = V;
 
-    //update faiseurs
-    for (size_t(i);i<vfaiseurs.size();++i)
+    // update faiseurs
+    for (size_t(i); i < vfaiseurs.size(); ++i)
     {
         if (!impasse_faiseur(i))
         {
@@ -288,43 +362,44 @@ void Jeu::updateJeu()
         }
     }
 
-    //update score et statut
-    score-=1;
-    if (score==0)
+    // update score et statut
+    score -= 1;
+    if (score == 0)
     {
-        statut=LOST;
-    } else if (chaine.tete_arrivee())
+        statut = LOST;
+    }
+    else if (chaine.tete_arrivee())
     {
-        statut=WON;
-    } else
+        statut = WON;
+    }
+    else
     {
-        statut=ONGOING;
-    }     
+        statut = ONGOING;
+    }
 }
 
-
-//if (arene.inclusion(Cart(vparticules[i].get_x0(),vparticules[i].get_y0())))
-//unsigned c = vparticules[i].get_c0();
-//vparticules[i].set_c0(c-1); 
-//if ( vparticules[i].get_c0() == time_to_split)
+// if (arene.inclusion(Cart(vparticules[i].get_x0(),vparticules[i].get_y0())))
+// unsigned c = vparticules[i].get_c0();
+// vparticules[i].set_c0(c-1);
+// if ( vparticules[i].get_c0() == time_to_split)
 //{
- //   if (nbPart==nb_particule_max)
-  //  {
-   //     swap(vparticules[i],vparticules.back());
-     //   vparticules.pop_back();
-       // nbPart-=1;
-    //} else
-    //{
-      //  swap(vparticules[i],vparticules.back());
-       // vparticules.pop_back();
-       // vparticules.push_back(Particule(vparticules[i].get_x0(),
-        //                      vparticules[i].get_y0(),
-          //                    vparticules[i].get_a0()+delta_split,
-            //                  vparticules[i].get_d0()*coef_split,0));
-       // vparticules.push_back(Particule(vparticules[i].get_x0(),
-         //                     vparticules[i].get_y0(),
-           //                   vparticules[i].get_a0()-delta_split,
-             //                 vparticules[i].get_d0()*coef_split,0));
-       // nbPart+=1;
-   // }
+//    if (nbPart==nb_particule_max)
+//   {
+//      swap(vparticules[i],vparticules.back());
+//    vparticules.pop_back();
+//  nbPart-=1;
+//} else
+//{
+//  swap(vparticules[i],vparticules.back());
+// vparticules.pop_back();
+// vparticules.push_back(Particule(vparticules[i].get_x0(),
+//                      vparticules[i].get_y0(),
+//                    vparticules[i].get_a0()+delta_split,
+//                  vparticules[i].get_d0()*coef_split,0));
+// vparticules.push_back(Particule(vparticules[i].get_x0(),
+//                     vparticules[i].get_y0(),
+//                   vparticules[i].get_a0()-delta_split,
+//                 vparticules[i].get_d0()*coef_split,0));
+// nbPart+=1;
+// }
 //}
