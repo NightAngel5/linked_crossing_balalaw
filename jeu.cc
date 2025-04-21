@@ -264,7 +264,7 @@ bool Jeu::collisionAF()
 }
 
 // Checks for specific articulation-Faiseur collisions.
-bool Jeu::intouch(vector<Cart> v1, vector<Cercle> v2, size_t a)
+bool Jeu::intouch(const vector<Cart> &v1, const vector<Cercle> &v2, size_t a)
 {
     if (v1.size() == 0)
     {
@@ -303,6 +303,7 @@ void Jeu::reset()
     etat_lecture = SCORE;
     vfaiseurs.clear();
     vparticules.clear();
+    vparticules.reserve(nb_particule_max);
     score = 0;
     nbFais = 0;
     nbArtic = 0;
@@ -340,6 +341,7 @@ void Jeu::updateJeu()
 {
     // update particules
     vParticules V;
+    V.reserve(vparticules.size() * 2); // worst case: every particle splits
     for (size_t i = 0; i < vparticules.size(); ++i)
     {
         if (vparticules[i].get_c0() == time_to_split)
@@ -350,25 +352,29 @@ void Jeu::updateJeu()
             }
             else if (nbPart < nb_particule_max)
             {
-                V.push_back(Particule(vparticules[i].get_x0(),
-                                      vparticules[i].get_y0(),
-                                      vparticules[i].get_a0() + delta_split,
-                                      vparticules[i].get_d0() * coef_split, 0)
-                                .move());
-                V[V.size() - 1].set_c0(0);
-                V.push_back(Particule(vparticules[i].get_x0(),
-                                      vparticules[i].get_y0(),
-                                      vparticules[i].get_a0() - delta_split,
-                                      vparticules[i].get_d0() * coef_split, 0)
-                                .move());
-                V[V.size() - 1].set_c0(0);
+                double n(vparticules[i].get_a0() + delta_split);
+                angleNormalise(n);
+                V.emplace_back(Particule(vparticules[i].get_x0(),
+                                         vparticules[i].get_y0(),
+                                         n,
+                                         vparticules[i].get_d0() * coef_split, 0)
+                                   .move());
+                V.back().set_c0(0);
+                n = vparticules[i].get_a0() - delta_split;
+                angleNormalise(n);
+                V.emplace_back(Particule(vparticules[i].get_x0(),
+                                         vparticules[i].get_y0(),
+                                         n,
+                                         vparticules[i].get_d0() * coef_split, 0)
+                                   .move());
+                V.back().set_c0(0);
                 nbPart += 1;
             }
         }
         else
             V.push_back(vparticules[i].move());
     }
-    vparticules = V;
+    vparticules = move(V);
 
     // update faiseurs
     for (size_t i = 0; i < vfaiseurs.size(); ++i)

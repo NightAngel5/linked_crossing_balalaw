@@ -13,14 +13,14 @@ class Mobile
 public:
     Mobile(double x0, double y0, double a0, double d0);
     Mobile() = default;
-    unsigned get_x0() { return x0; }
-    void set_x0(unsigned x) { x0 = x; }
-    unsigned get_y0() { return y0; }
-    void set_y0(unsigned y) { y0 = y; }
-    unsigned get_a0() { return a0; }
-    void set_a0(unsigned a) { a0 = a; }
-    unsigned get_d0() { return d0; }
-    void set_d0(unsigned d) { d0 = d; }
+    double get_x0() { return x0; }
+    void set_x0(double x) { x0 = x; }
+    double get_y0() { return y0; }
+    void set_y0(double y) { y0 = y; }
+    double get_a0() { return a0; }
+    void set_a0(double a) { a0 = a; }
+    double get_d0() { return d0; }
+    void set_d0(double d) { d0 = d; }
 
 protected:
     double x0, y0, a0, d0;
@@ -49,8 +49,8 @@ public:
     bool lecture(std::istringstream &data, const std::vector<Faiseur> &V);
     std::vector<Cercle> constructionFaiseur() const;
     void draw();
-    unsigned get_r0() { return r0; }
-    void set_c0(unsigned x) { r0 = x; }
+    double get_r0() { return r0; }
+    void set_r0(double x) { r0 = x; }
     void move();
 
 private:

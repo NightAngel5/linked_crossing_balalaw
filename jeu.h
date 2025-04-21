@@ -66,7 +66,7 @@ private:
 
     bool collisionAF();
 
-    bool intouch(std::vector<Cart> v1, std::vector<Cercle> v2, size_t a);
+    bool intouch(const std::vector<Cart> &v1, const std::vector<Cercle> &v2, size_t a);
 
 public:
     Mode get_mode() { return mode; }
