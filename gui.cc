@@ -124,7 +124,7 @@ void My_window::start_clicked()
         buttons[B_START].set_label("start");
         buttons[B_STEP].set_sensitive(true);
     }
-    else // if (appel pour obtenir le statut du jeu !== ON_GOING) // voir jeu.h
+    else // if (appel pour obtenir le statut du jeu == ON_GOING) // voir jeu.h
     {
         loop_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this,
                                                                  &My_window::loop),

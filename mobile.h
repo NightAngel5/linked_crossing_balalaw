@@ -8,25 +8,30 @@
 #include "message.h"
 #include "constantes.h"
 
+class mobile
+{
+protected:
+    double x0,y0,a0,d0;
+};
 
-class Particule 
+class Particule: public mobile
 {
 public:                                 
-    bool lecture(std::istringstream &data);     
+    bool lecture(std::istringstream &data);
+    void draw();  
 private:
-    double x0,y0,a0,d0;
     unsigned c0;                   
 };
 
 
-class Faiseur 
+class Faiseur: public mobile 
 {
 public:                                
     bool lecture(std::istringstream &data, const std::vector<Faiseur>& V);
-    
-    std::vector<Cercle> constructionFaiseur() const;    
+    std::vector<Cercle> constructionFaiseur() const;  
+    void draw();  
 private:
-    double x0,y0,a0,d0,r0;
+    double r0;
     unsigned nbe0;           
 };
 

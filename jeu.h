@@ -38,6 +38,7 @@ class Jeu
 public:
     Jeu();
     void lecture(std::string nom_fichier);
+    void updatejeu();
 };
 
 bool decodage_ligne(std::istringstream &data);
