@@ -153,5 +153,10 @@ Pol opp(const Pol &p)
 
 void drawCircle(Cercle C, Color C1, double width, Remplissage Remp, Color C2)
 {
-    draw_circle(C.C.point.x, C.C.point.y, C.R, width, C1, Remp, C2);
+    Graphic::draw_circle(C.C.point.x, C.C.point.y, C.R, width, C1, Remp, C2);
+}
+
+void drawLine(Cart C1, Cart C2, Color C, double width)
+{
+    Graphic::draw_line(C1.point.x, C1.point.y, C2.point.x, C2.point.y, width, C);
 }

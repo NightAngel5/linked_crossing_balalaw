@@ -16,13 +16,12 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
     ptcr = &cr;
 }
 
-
-void draw_circle(double x, double y, double r,double width, Color C, Remplissage R, Color C_Interieur)
+void Graphic::draw_circle(double x, double y, double r, double width, Color C, Remplissage R, Color C_Interieur)
 {
     (*ptcr)->set_line_width(width);
     set_color(C_Interieur);
     (*ptcr)->arc(x, y, r, 0.0, 2 * M_PI);
-    if (R==PLEIN)
+    if (R == PLEIN)
     {
         set_color(C_Interieur);
         (*ptcr)->fill_preserve();
@@ -31,11 +30,11 @@ void draw_circle(double x, double y, double r,double width, Color C, Remplissage
     (*ptcr)->stroke();
 }
 
-void dray_line(double x1, double y1, double x2, double y2,double width, Color C)
+void Graphic::draw_line(double x1, double y1, double x2, double y2, double width, Color C)
 {
     (*ptcr)->set_line_width(width);
-    (*ptcr)->move_to(x1,y1);
-    (*ptcr)->line_to(x2,y2);
+    (*ptcr)->move_to(x1, y1);
+    (*ptcr)->line_to(x2, y2);
     (*ptcr)->stroke();
 }
 

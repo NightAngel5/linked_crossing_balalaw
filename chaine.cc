@@ -4,6 +4,11 @@
 
 using namespace std;
 
+Cart Chaine::pointOppose(Cart P)
+{
+    return Cart();
+}
+
 // Reads and validates articulation points for the chain.
 bool Chaine::lecture(std::istringstream &data)
 {
@@ -43,4 +48,21 @@ bool Chaine::lecture(std::istringstream &data)
 std::vector<Cart> Chaine::articulations()
 {
     return articulations_;
+}
+
+void Chaine::draw()
+{
+    if (articulations_.size() > 0)
+    {
+        for (size_t i = 0; i < articulations_.size(); i++)
+        {
+            drawCircle(Cercle(r_viz, articulations_[0]), RED);
+            if (i > 0)
+            {
+                drawLine(articulations_[i - 1], articulations_[i], RED);
+            }
+        }
+        drawCircle(Cercle(r_capture, articulations_[articulations_.size()]), RED);
+        drawCircle(Cercle(r_viz, point_opp), BLACK);
+    }
 }

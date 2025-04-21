@@ -35,30 +35,38 @@ enum etat
 
 class Jeu
 {
+private:
+    Chaine chaine;
+    vFaiseurs vfaiseurs;
+    vParticules vparticules;
+    etat etat_lecture;
+    unsigned score, nbPart, nbFais, nbArtic;
+    Mode mode;
+    bool decodage_ligne(std::istringstream &data);
+
+    bool decodage_score(std::istringstream &data);
+
+    bool decodage_nbPart(std::istringstream &data);
+
+    bool decodage_part(std::istringstream &data);
+
+    bool decodage_nbFais(std::istringstream &data);
+
+    bool decodage_fais(std::istringstream &data);
+
+    bool decodage_nbArtic(std::istringstream &data);
+
+    bool decodage_artic(std::istringstream &data);
+
+    bool decodage_mode(std::istringstream &data);
+
+    bool collisionAF();
+
+    bool intouch(std::vector<Cart> v1, std::vector<Cercle> v2, size_t a);
+
 public:
     Jeu();
     void lecture(std::string nom_fichier);
 };
 
-bool decodage_ligne(std::istringstream &data);
-
-bool decodage_score(std::istringstream &data);
-
-bool decodage_nbPart(std::istringstream &data);
-
-bool decodage_part(std::istringstream & data);
-
-bool decodage_nbFais(std::istringstream &data);
-
-bool decodage_fais(std::istringstream &data);
-
-bool decodage_nbArtic(std::istringstream &data);
-
-bool decodage_artic(std::istringstream &data);
-
-bool decodage_mode(std::istringstream &data);
-
-bool collisionAF();
-
-bool intouch(std::vector<Cart> v1, std::vector<Cercle> v2, size_t a );
 #endif

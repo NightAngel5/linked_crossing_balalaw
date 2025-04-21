@@ -12,10 +12,13 @@ class Chaine
 {
 private:
     std::vector<Cart> articulations_;
+    Cart point_opp;
+    Cart pointOppose(Cart P);
+
 public:
     bool lecture(std::istringstream &data);
-    
     std::vector<Cart> articulations();
+    void draw();
 };
 
 #endif
