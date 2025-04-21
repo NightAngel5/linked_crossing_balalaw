@@ -42,6 +42,10 @@ private:
     etat etat_lecture;
     unsigned score, nbPart, nbFais, nbArtic;
     Mode mode;
+    Status statut;
+    Mode get_mode() { return mode; }
+    Status get_statut() { return statut; }
+    void set_status();
     bool decodage_ligne(std::istringstream &data);
 
     bool decodage_score(std::istringstream &data);
@@ -67,7 +71,7 @@ private:
 public:
     Jeu();
     void lecture(std::string nom_fichier);
-    void updatejeu();
+    void updateJeu();
 };
 
 #endif

@@ -250,3 +250,81 @@ bool Jeu::intouch(vector<Cart> v1, vector<Cercle> v2, size_t a)
     }
     return false;
 }
+
+
+void Jeu::updateJeu()
+{
+    //update particules
+    vParticules V;
+    for (size_t(i);i<vparticules.size();++i)
+    {
+        if (nbPart==nb_particule_max) { nbPart-=1; }
+        else if ( nbPart< nb_particule_max and vparticules[i].get_c0() < time_to_split  )
+        {
+            V.push_back(vparticules[i].move());
+        } else if ( nbPart< nb_particule_max and vparticules[i].get_c0() == time_to_split  )
+        {
+            V.push_back(Particule(vparticules[i].get_x0(),
+                                    vparticules[i].get_y0(),
+                                    vparticules[i].get_a0()+delta_split,
+                                    vparticules[i].get_d0()*coef_split,0).move());
+            V[V.size()-1].set_c0(0);
+            V.push_back(Particule(vparticules[i].get_x0(),
+                                    vparticules[i].get_y0(),
+                                    vparticules[i].get_a0()-delta_split,
+                                    vparticules[i].get_d0()*coef_split,0).move());
+            V[V.size()-1].set_c0(0);
+            nbPart+=1;
+        }
+    }
+    vparticules=V;
+
+    //update faiseurs
+    for (size_t(i);i<vfaiseurs.size();++i)
+    {
+        if (!impasse_faiseur(i))
+        {
+            vfaiseurs[i].move();
+        }
+    }
+
+    //update score et statut
+    score-=1;
+    if (score==0)
+    {
+        statut=LOST;
+    } else if (chaine.tete_arrivee())
+    {
+        statut=WON;
+    } else
+    {
+        statut=ONGOING;
+    }     
+}
+
+
+//if (arene.inclusion(Cart(vparticules[i].get_x0(),vparticules[i].get_y0())))
+//unsigned c = vparticules[i].get_c0();
+//vparticules[i].set_c0(c-1); 
+//if ( vparticules[i].get_c0() == time_to_split)
+//{
+ //   if (nbPart==nb_particule_max)
+  //  {
+   //     swap(vparticules[i],vparticules.back());
+     //   vparticules.pop_back();
+       // nbPart-=1;
+    //} else
+    //{
+      //  swap(vparticules[i],vparticules.back());
+       // vparticules.pop_back();
+       // vparticules.push_back(Particule(vparticules[i].get_x0(),
+        //                      vparticules[i].get_y0(),
+          //                    vparticules[i].get_a0()+delta_split,
+            //                  vparticules[i].get_d0()*coef_split,0));
+       // vparticules.push_back(Particule(vparticules[i].get_x0(),
+         //                     vparticules[i].get_y0(),
+           //                   vparticules[i].get_a0()-delta_split,
+             //                 vparticules[i].get_d0()*coef_split,0));
+       // nbPart+=1;
+   // }
+//}

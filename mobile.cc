@@ -4,6 +4,13 @@
 
 using namespace std;
 
+
+
+
+Mobile::Mobile(double x0,double y0,double a0,double d0): x0(x0), y0(y0), a0(a0), d0(d0) {}
+
+Particule::Particule(double x0,double y0,double a0,double d0,unsigned c0): Mobile(x0,y0,a0,d0), c0(c0) {}
+
 // Reads and validates attributes for a particle.
 bool Particule::lecture(istringstream &data)
 {
@@ -42,6 +49,9 @@ void Particule::draw()
     drawCircle(Cercle(r_viz, x0, y0), GREEN, 0.7, PLEIN, CYAN);
 }
 
+
+
+Faiseur::Faiseur(double x0,double y0,double a0,double d0,unsigned r0, unsigned nbe0):Mobile(x0,y0,a0,d0), r0(r0), nbe0(nbe0){}
 // Reads and validates attributes for a Faiseur + checking for collisions.
 bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
 {
