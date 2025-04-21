@@ -39,9 +39,8 @@ bool Particule::lecture(istringstream &data)
 
 void Particule::draw()
 {
-    drawCircle(Cercle(r_viz,x0,y0),GREEN,0.7,PLEIN,CYAN);
+    drawCircle(Cercle(r_viz, x0, y0), GREEN, 0.7, PLEIN, CYAN);
 }
-
 
 // Reads and validates attributes for a Faiseur + checking for collisions.
 bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
@@ -100,16 +99,13 @@ std::vector<Cercle> Faiseur::constructionFaiseur() const
 
     for (unsigned i(0); i < nbe0; ++i)
     {
-        if (Cercle(r_max).inclusion(Cercle(r0, c + pas1)))
+        if (!Cercle(r_max).inclusion(Cercle(r0, c + pas1)))
         {
-            v1.push_back(Cercle(r0, c + pas1));
-            c += pas1;
-        }
-        else
             pas1 = reflect(c, pas, BACKWARD);
             pas = opp(pas1);
-            v1.push_back(Cercle(r0, c + pas1));
-            c += pas1;
+        }
+        v1.push_back(Cercle(r0, c + pas1));
+        c += pas1;
     }
     return v1;
 }
@@ -119,11 +115,9 @@ void Faiseur::draw()
     std::vector<Cercle> v(constructionFaiseur());
     for (unsigned i(0); i <= nbe0; ++i)
     {
-        drawCircle(Cercle(r0,x0,y0),BLUE,0.7);
+        drawCircle(Cercle(r0, x0, y0), BLUE, 0.7);
     }
-
 }
-
 
 // Checks if a Faiseur collides with any other Faiseur in a list.
 bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V)
