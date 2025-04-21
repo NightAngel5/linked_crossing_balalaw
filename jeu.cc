@@ -3,13 +3,6 @@
 
 using namespace std;
 
-static Chaine chaine;
-static vFaiseurs vfaiseurs;
-static vParticules vparticules;
-static etat etat_lecture;
-static unsigned score, nbPart, nbFais, nbArtic;
-static Mode mode;
-
 // Initializes the game state.
 Jeu::Jeu()
 {
@@ -50,7 +43,7 @@ void Jeu::lecture(std::string nom_fichier)
 }
 
 // Decodes a line of game data based on the current reading state (etat_lecture).
-bool decodage_ligne(istringstream &data)
+bool Jeu::decodage_ligne(istringstream &data)
 {
     switch (etat_lecture)
     {
@@ -98,7 +91,7 @@ bool decodage_ligne(istringstream &data)
 }
 
 // Reads and validates the score value.
-bool decodage_score(istringstream &data)
+bool Jeu::decodage_score(istringstream &data)
 {
     if (data >> score)
     {
@@ -115,7 +108,7 @@ bool decodage_score(istringstream &data)
 }
 
 // Reads and validates the number of particles.
-bool decodage_nbPart(istringstream &data)
+bool Jeu::decodage_nbPart(istringstream &data)
 {
     if (data >> nbPart)
     {
@@ -132,7 +125,7 @@ bool decodage_nbPart(istringstream &data)
 }
 
 // Reads and adds a particle.
-bool decodage_part(istringstream &data)
+bool Jeu::decodage_part(istringstream &data)
 {
     Particule x;
     if (x.lecture(data))
@@ -148,7 +141,7 @@ bool decodage_part(istringstream &data)
 }
 
 // Reads and validates the number of Faiseurs.
-bool decodage_nbFais(istringstream &data)
+bool Jeu::decodage_nbFais(istringstream &data)
 {
     if (data >> nbFais)
     {
@@ -159,7 +152,7 @@ bool decodage_nbFais(istringstream &data)
 }
 
 // Reads and adds a Faiseur.
-bool decodage_fais(istringstream &data)
+bool Jeu::decodage_fais(istringstream &data)
 {
     Faiseur x;
     if (x.lecture(data, vfaiseurs))
@@ -175,7 +168,7 @@ bool decodage_fais(istringstream &data)
 }
 
 // Reads and validates the number of articulations.
-bool decodage_nbArtic(istringstream &data)
+bool Jeu::decodage_nbArtic(istringstream &data)
 {
     if (data >> nbArtic)
     {
@@ -186,7 +179,7 @@ bool decodage_nbArtic(istringstream &data)
 }
 
 // Reads and adds an articulation.
-bool decodage_artic(istringstream &data)
+bool Jeu::decodage_artic(istringstream &data)
 {
     if (chaine.lecture(data))
     {
@@ -200,7 +193,7 @@ bool decodage_artic(istringstream &data)
 }
 
 // Reads and sets the game mode.
-bool decodage_mode(istringstream &data)
+bool Jeu::decodage_mode(istringstream &data)
 {
     string x;
     if (data >> x)
@@ -223,7 +216,7 @@ bool decodage_mode(istringstream &data)
 }
 
 // Checks for collisions between articulations and Faiseurs.
-bool collisionAF()
+bool Jeu::collisionAF()
 {
     vector<Cart> v1(chaine.articulations());
     for (size_t i(0); i < vfaiseurs.size(); ++i)
@@ -238,7 +231,7 @@ bool collisionAF()
 }
 
 // Checks for specific articulation-Faiseur collisions.
-bool intouch(vector<Cart> v1, vector<Cercle> v2, size_t a)
+bool Jeu::intouch(vector<Cart> v1, vector<Cercle> v2, size_t a)
 {
     if (v1.size() == 0)
     {
