@@ -44,12 +44,8 @@ private:
     Mode mode;
     bool lecture_ok_;
 
-    bool impasse_faiseur(size_t j);
+    Status status;
 
-    Status statut;
-    Mode get_mode() { return mode; }
-    Status get_statut() { return statut; }
-    void set_status();
     bool decodage_ligne(std::istringstream &data);
 
     bool decodage_score(std::istringstream &data);
@@ -73,6 +69,10 @@ private:
     bool intouch(std::vector<Cart> v1, std::vector<Cercle> v2, size_t a);
 
 public:
+    Mode get_mode() { return mode; }
+    Status get_status() { return status; }
+    void set_status();
+    bool impasse_faiseur(size_t j);
     Jeu();
     bool lecture(std::string nom_fichier);
     void updateJeu();

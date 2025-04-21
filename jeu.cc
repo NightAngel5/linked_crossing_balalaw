@@ -366,15 +366,15 @@ void Jeu::updateJeu()
     score -= 1;
     if (score == 0)
     {
-        statut = LOST;
+        status = LOST;
     }
     else if (chaine.tete_arrivee())
     {
-        statut = WON;
+        status = WON;
     }
     else
     {
-        statut = ONGOING;
+        status = ONGOING;
     }
 }
 

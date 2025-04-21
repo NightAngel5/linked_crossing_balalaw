@@ -12,6 +12,7 @@ class Mobile
 {
 public:
     Mobile(double x0, double y0, double a0, double d0);
+    Mobile() = default;
     unsigned get_x0() { return x0; }
     void set_x0(unsigned x) { x0 = x; }
     unsigned get_y0() { return y0; }
@@ -29,6 +30,7 @@ class Particule : public Mobile
 {
 public:
     Particule(double x0, double y0, double a0, double d0, unsigned c0);
+    Particule() = default;
     bool lecture(std::istringstream &data);
     unsigned get_c0() { return c0; }
     void set_c0(unsigned x) { c0 = x; }
@@ -43,6 +45,7 @@ class Faiseur : public Mobile
 {
 public:
     Faiseur(double x0, double y0, double a0, double d0, unsigned r0, unsigned nbe0);
+    Faiseur() = default;
     bool lecture(std::istringstream &data, const std::vector<Faiseur> &V);
     std::vector<Cercle> constructionFaiseur() const;
     void draw();
