@@ -251,3 +251,17 @@ bool Jeu::intouch(vector<Cart> v1, vector<Cercle> v2, size_t a)
     }
     return false;
 }
+
+void Jeu::draw()
+{
+    drawCircle(Cercle(r_max, Cart(0, 0)), GREEN);
+    for (auto i : vfaiseurs)
+    {
+        i.draw();
+    }
+    for (auto i : vparticules)
+    {
+        i.draw();
+    }
+    chaine.draw();
+}

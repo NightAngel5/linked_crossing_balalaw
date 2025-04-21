@@ -68,6 +68,7 @@ public:
     Jeu();
     void lecture(std::string nom_fichier);
     void updatejeu();
+    void draw();
 };
 
 #endif
