@@ -1,0 +1,22 @@
+# test1: Correct file; 
+#
+8000
+
+# nombre d’entité particule puis les données d’une entité par ligne
+3
+    10.    20.  0.   1.  0
+    -10. -20. 3.14 1. 0
+    5. 4. 10. 2. 0
+
+# nombre d’entité faiseur puis les données d’une entité par ligne
+1
+    -90.	-20.	0.	2.	2.	10
+
+# nombre d’articulations (nul veut dire « pas de chaîne ») 
+#        puis une ligne par articulation 
+3
+    -95 0
+    -80 5
+    -80 0
+
+CONSTRUCTION

@@ -1,11 +1,11 @@
 # Definitions de macros
 OUT = projet
 CXX     = g++
-CXXFLAGS = -g -std=c++11
+CXXFLAGS = -g -std=c++17
 LINKING = `pkg-config --cflags gtkmm-4.0`
 LDLIBS = `pkg-config --libs gtkmm-4.0`
-CXXFILES = projet.cc jeu.cc chaine.cc mobile.cc message.cc tools.cc
-OFILES = projet.o jeu.o chaine.o mobile.o message.o tools.o
+CXXFILES = projet.cc jeu.cc chaine.cc mobile.cc message.cc tools.cc gui.cc graphic.cc
+OFILES = projet.o jeu.o chaine.o mobile.o message.o tools.o gui.o graphic.o
 
 # Definition de la premiere regle
 all: $(OUT)
@@ -38,10 +38,14 @@ $(OUT): $(OFILES)
 # -- Regles de dependances generees automatiquement
 #
 # DO NOT DELETE THIS LINE
-projet.o: projet.cc jeu.h tools.h mobile.h message.h constantes.h \
+projet.o: projet.cc gui.h jeu.h tools.h graphic.h mobile.h message.h \
+ constantes.h chaine.h
+jeu.o: jeu.cc jeu.h tools.h graphic.h mobile.h message.h constantes.h \
  chaine.h
-jeu.o: jeu.cc jeu.h tools.h mobile.h message.h constantes.h chaine.h
-chaine.o: chaine.cc chaine.h tools.h message.h constantes.h
-mobile.o: mobile.cc mobile.h tools.h message.h constantes.h
+chaine.o: chaine.cc chaine.h tools.h graphic.h message.h constantes.h
+mobile.o: mobile.cc mobile.h tools.h graphic.h message.h constantes.h
 message.o: message.cc message.h
-tools.o: tools.cc tools.h
+tools.o: tools.cc tools.h graphic.h
+gui.o: gui.cc graphic_gui.h graphic.h gui.h jeu.h tools.h mobile.h \
+ message.h constantes.h chaine.h
+graphic.o: graphic.cc graphic_gui.h graphic.h

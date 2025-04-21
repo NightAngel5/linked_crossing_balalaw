@@ -125,7 +125,7 @@ void Faiseur::draw()
     std::vector<Cercle> v(constructionFaiseur());
     for (unsigned i(0); i <= nbe0; ++i)
     {
-        drawCircle(Cercle(r0, x0, y0), BLUE, 0.7);
+        drawCircle(v[i], BLUE, 0.7);
     }
 }
 

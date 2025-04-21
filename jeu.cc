@@ -37,9 +37,25 @@ bool Jeu::lecture(std::string nom_fichier)
         return false;
 }
 
+void Jeu::set_status()
+{
+    if (score == 0)
+    {
+        status = LOST;
+    }
+    else if (chaine.tete_arrivee())
+    {
+        status = WON;
+    }
+    else
+    {
+        status = ONGOING;
+    }
+}
+
 bool Jeu::impasse_faiseur(size_t j)
 {
-    Cart P = (vfaiseurs[j].get_x0(), vfaiseurs[j].get_y0());
+    Cart P(vfaiseurs[j].get_x0(), vfaiseurs[j].get_y0());
     Pol vect(vfaiseurs[j].get_d0(), vfaiseurs[j].get_a0());
     P += vect;
     Cercle tete(vfaiseurs[j].get_r0(), P);
@@ -51,11 +67,11 @@ bool Jeu::impasse_faiseur(size_t j)
         {
             if (intersection(tete, k))
             {
-                return false;
+                return true;
             }
         }
     }
-    return true;
+    return false;
 }
 
 // Decodes a line of game data based on the current reading state (etat_lecture).
@@ -324,37 +340,38 @@ void Jeu::updateJeu()
 {
     // update particules
     vParticules V;
-    for (size_t(i); i < vparticules.size(); ++i)
+    for (size_t i = 0; i < vparticules.size(); ++i)
     {
-        if (nbPart == nb_particule_max)
+        if (vparticules[i].get_c0() == time_to_split)
         {
-            nbPart -= 1;
+            if (nbPart == nb_particule_max)
+            {
+                nbPart -= 1;
+            }
+            else if (nbPart < nb_particule_max)
+            {
+                V.push_back(Particule(vparticules[i].get_x0(),
+                                      vparticules[i].get_y0(),
+                                      vparticules[i].get_a0() + delta_split,
+                                      vparticules[i].get_d0() * coef_split, 0)
+                                .move());
+                V[V.size() - 1].set_c0(0);
+                V.push_back(Particule(vparticules[i].get_x0(),
+                                      vparticules[i].get_y0(),
+                                      vparticules[i].get_a0() - delta_split,
+                                      vparticules[i].get_d0() * coef_split, 0)
+                                .move());
+                V[V.size() - 1].set_c0(0);
+                nbPart += 1;
+            }
         }
-        else if (nbPart < nb_particule_max and vparticules[i].get_c0() < time_to_split)
-        {
+        else
             V.push_back(vparticules[i].move());
-        }
-        else if (nbPart < nb_particule_max and vparticules[i].get_c0() == time_to_split)
-        {
-            V.push_back(Particule(vparticules[i].get_x0(),
-                                  vparticules[i].get_y0(),
-                                  vparticules[i].get_a0() + delta_split,
-                                  vparticules[i].get_d0() * coef_split, 0)
-                            .move());
-            V[V.size() - 1].set_c0(0);
-            V.push_back(Particule(vparticules[i].get_x0(),
-                                  vparticules[i].get_y0(),
-                                  vparticules[i].get_a0() - delta_split,
-                                  vparticules[i].get_d0() * coef_split, 0)
-                            .move());
-            V[V.size() - 1].set_c0(0);
-            nbPart += 1;
-        }
     }
     vparticules = V;
 
     // update faiseurs
-    for (size_t(i); i < vfaiseurs.size(); ++i)
+    for (size_t i = 0; i < vfaiseurs.size(); ++i)
     {
         if (!impasse_faiseur(i))
         {
@@ -364,42 +381,5 @@ void Jeu::updateJeu()
 
     // update score et statut
     score -= 1;
-    if (score == 0)
-    {
-        status = LOST;
-    }
-    else if (chaine.tete_arrivee())
-    {
-        status = WON;
-    }
-    else
-    {
-        status = ONGOING;
-    }
+    set_status();
 }
-
-// if (arene.inclusion(Cart(vparticules[i].get_x0(),vparticules[i].get_y0())))
-// unsigned c = vparticules[i].get_c0();
-// vparticules[i].set_c0(c-1);
-// if ( vparticules[i].get_c0() == time_to_split)
-//{
-//    if (nbPart==nb_particule_max)
-//   {
-//      swap(vparticules[i],vparticules.back());
-//    vparticules.pop_back();
-//  nbPart-=1;
-//} else
-//{
-//  swap(vparticules[i],vparticules.back());
-// vparticules.pop_back();
-// vparticules.push_back(Particule(vparticules[i].get_x0(),
-//                      vparticules[i].get_y0(),
-//                    vparticules[i].get_a0()+delta_split,
-//                  vparticules[i].get_d0()*coef_split,0));
-// vparticules.push_back(Particule(vparticules[i].get_x0(),
-//                     vparticules[i].get_y0(),
-//                   vparticules[i].get_a0()-delta_split,
-//                 vparticules[i].get_d0()*coef_split,0));
-// nbPart+=1;
-// }
-//}

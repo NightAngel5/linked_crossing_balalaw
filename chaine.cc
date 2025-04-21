@@ -58,13 +58,13 @@ void Chaine::draw()
     {
         for (size_t i = 0; i < articulations_.size(); i++)
         {
-            drawCircle(Cercle(r_viz, articulations_[0]), RED);
+            drawCircle(Cercle(r_viz, articulations_[i]), RED);
             if (i > 0)
             {
                 drawLine(articulations_[i - 1], articulations_[i], RED);
             }
         }
-        drawCircle(Cercle(r_capture, articulations_[articulations_.size()]), RED);
+        drawCircle(Cercle(r_capture, articulations_[articulations_.size() - 1]), RED);
         drawCircle(Cercle(r_viz, point_opp), BLACK);
     }
 }

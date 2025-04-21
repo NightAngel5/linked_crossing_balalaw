@@ -267,22 +267,20 @@ bool My_window::loop()
 }
 void My_window::update()
 {
-    // remplacer affichage par votre code
-    cout << __func__ << endl;
-
+    jeu.updateJeu();
     update_infos();
     drawing.queue_draw();
 
-    //~ if (appel pour obtenir le statut du jeu !== ON_GOING) // voir jeu.h
-    //~ {
-    //~ ...
-    //~ buttons[B_SAVE].set_sensitive(false);
-    //~ buttons[B_START].set_sensitive(false);
-    //~ buttons[B_STEP].set_sensitive(false);
-    //~ checks[0].set_active(true);
-    //~ checks[0].set_sensitive(false);
-    //~ checks[1].set_sensitive(false);
-    //~ }
+    if (jeu.get_status() != ONGOING) // voir jeu.h
+    {
+        //...
+        buttons[B_SAVE].set_sensitive(false);
+        buttons[B_START].set_sensitive(false);
+        buttons[B_STEP].set_sensitive(false);
+        checks[0].set_active(true);
+        checks[0].set_sensitive(false);
+        checks[1].set_sensitive(false);
+    }
 }
 
 void My_window::set_infos()
@@ -364,17 +362,14 @@ S2d My_window::scaled(S2d const &pos) const
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
     // remplacer affichage par votre code
-    cout << __func__ << endl;
 }
 void My_window::on_drawing_right_click(int n_press, double x, double y)
 {
     // remplacer affichage par votre code
-    cout << __func__ << endl;
 }
 void My_window::on_drawing_move(double x, double y)
 {
     // remplacer affichage par votre code
-    cout << __func__ << endl;
 }
 
 void My_window::set_jeu(string file_name)
