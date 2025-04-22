@@ -1,6 +1,6 @@
 # test1: Correct file; 
 #
-1000
+200
 
 # nombre d’entité particule puis les données d’une entité par ligne
 3

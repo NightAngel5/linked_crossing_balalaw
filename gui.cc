@@ -2,6 +2,7 @@
 #include <cassert>
 #include "graphic_gui.h"
 #include "gui.h"
+#include <gdk/gdkkeysyms.h>
 
 using namespace std;
 
@@ -156,25 +157,31 @@ void My_window::set_key_controller()
                                         false);
     add_controller(contr);
 }
+
 bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state)
 {
-
-    switch (keyval)
+    if (jeu.lecture_ok())
     {
-    case '1':
-        My_window::step_clicked();
-
-        return true;
-    case 's':
-        My_window::start_clicked();
-
-        return true;
-    case 'r':
-        My_window::restart_clicked();
-
-        return true;
-    default:
-        return false;
+        switch (keyval)
+        {
+        case '1':
+        case GDK_KEY_KP_1:
+            if (!activated && jeu.get_status() == ONGOING)
+                My_window::step_clicked();
+            return true;
+        case 's':
+        case 'S': // Optional, in case caps lock is on
+            if (jeu.get_status() == ONGOING)
+                My_window::start_clicked();
+            return true;
+        case 'r':
+        case 'R':
+            if (!activated)
+                My_window::restart_clicked();
+            return true;
+        default:
+            return false;
+        }
     }
     return false;
 }
@@ -265,7 +272,7 @@ void My_window::update()
 
     if (jeu.get_status() != ONGOING) // voir jeu.h
     {
-        loop_conn.disconnect();
+        start_clicked();
         buttons[B_SAVE].set_sensitive(false);
         buttons[B_START].set_sensitive(false);
         buttons[B_STEP].set_sensitive(false);
