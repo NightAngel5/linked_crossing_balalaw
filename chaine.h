@@ -20,6 +20,7 @@ public:
     std::vector<Cart> articulations();
     void draw();
     bool tete_arrivee();
+    void reset();
 };
 
 #endif

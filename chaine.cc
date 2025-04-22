@@ -61,15 +61,20 @@ void Chaine::draw()
             drawCircle(Cercle(r_viz, articulations_[i]), RED);
             if (i > 0)
             {
-                drawLine(articulations_[i - 1], articulations_[i], RED);
+                drawLine(articulations_[i - 1], articulations_[i], RED, 1.2);
             }
         }
         drawCircle(Cercle(r_capture, articulations_[articulations_.size() - 1]), RED);
-        drawCircle(Cercle(r_viz, point_opp), BLACK);
+        drawCircle(Cercle(r_viz, point_opp), BLACK, 0.7, PLEIN, BLACK);
     }
 }
 
 bool Chaine::tete_arrivee()
 {
     return articulations_.size() && distance(articulations_[articulations_.size()], point_opp) < epsil_zero;
+}
+
+void Chaine::reset()
+{
+    articulations_.clear();
 }

@@ -12,6 +12,7 @@ Jeu::Jeu()
 // Reads and processes game data from a file.
 bool Jeu::lecture(std::string nom_fichier)
 {
+    reset();
     ifstream fichier(nom_fichier);
     if (!fichier.fail())
     {
@@ -286,7 +287,7 @@ bool Jeu::intouch(const vector<Cart> &v1, const vector<Cercle> &v2, size_t a)
 
 void Jeu::draw()
 {
-    drawCircle(Cercle(r_max, Cart(0, 0)), GREEN);
+    drawCircle(Cercle(r_max, Cart(0, 0)), GREEN, 1);
     for (auto i : vfaiseurs)
     {
         i.draw();
@@ -308,6 +309,7 @@ void Jeu::reset()
     nbFais = 0;
     nbArtic = 0;
     nbPart = 0;
+    chaine.reset();
     mode = CONSTRUCTION;
     status = ONGOING;
     lecture_ok_ = false;
@@ -388,4 +390,39 @@ void Jeu::updateJeu()
     // update score et statut
     score -= 1;
     set_status();
+}
+
+void Jeu::save(string file_name)
+{
+    ofstream fichier(file_name);
+    if (!fichier)
+    {
+        cout << "Erreur lors de l'ouverture du fichier: " << file_name << endl;
+        return;
+    }
+    fichier << score << endl
+            << endl
+            << nbPart << endl;
+    for (auto i : vparticules)
+    {
+        fichier << "\t" << i.get_x0() << " " << i.get_y0() << " " << i.get_a0()
+                << " " << i.get_d0() << " " << i.get_c0() << endl;
+    }
+    fichier << endl
+            << nbFais << endl;
+    for (auto i : vfaiseurs)
+    {
+        fichier << "\t" << i.get_x0() << " " << i.get_y0() << " " << i.get_a0()
+                << " " << i.get_d0() << " " << i.get_r0() << " " << i.get_nbe0() << endl;
+    }
+    fichier << endl
+            << nbArtic << endl;
+    for (auto i : chaine.articulations())
+    {
+        fichier << "\t" << i.point.x << " " << i.point.y << endl;
+    }
+    fichier << endl
+            << (mode == 0
+                    ? "CONSTRUCTION"
+                    : "GUIDAGE");
 }

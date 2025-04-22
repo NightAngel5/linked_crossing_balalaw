@@ -68,11 +68,12 @@ private:
 
     bool intouch(const std::vector<Cart> &v1, const std::vector<Cercle> &v2, size_t a);
 
+    bool impasse_faiseur(size_t j);
+
 public:
     Mode get_mode() { return mode; }
     Status get_status() { return status; }
     void set_status();
-    bool impasse_faiseur(size_t j);
     Jeu();
     bool lecture(std::string nom_fichier);
     void updateJeu();
@@ -83,6 +84,8 @@ public:
     unsigned get_nb_part();
     unsigned get_nb_fais();
     unsigned get_nb_artic();
+    void save(std::string);
+    void set_mode(Mode m) { mode = m; }
 };
 
 #endif

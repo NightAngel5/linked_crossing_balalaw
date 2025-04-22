@@ -108,8 +108,7 @@ void My_window::save_clicked()
 }
 void My_window::restart_clicked()
 {
-    // remplacer affichage par votre code
-    cout << __func__ << endl;
+    My_window::set_jeu(previous_file_name);
 }
 void My_window::start_clicked()
 {
@@ -140,18 +139,15 @@ void My_window::start_clicked()
 }
 void My_window::step_clicked()
 {
-    // remplacer affichage par votre code
-    cout << __func__ << endl;
+    My_window::update();
 }
 void My_window::build_clicked()
 {
-    // remplacer affichage par votre code
-    cout << __func__ << endl;
+    jeu.set_mode(CONSTRUCTION);
 }
 void My_window::guide_clicked()
 {
-    // remplacer affichage par votre code
-    cout << __func__ << endl;
+    jeu.set_mode(GUIDAGE);
 }
 void My_window::set_key_controller()
 {
@@ -166,18 +162,15 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
     switch (keyval)
     {
     case '1':
-        // remplacer affichage par votre code
-        cout << keyval << "  " << __func__ << endl;
+        My_window::step_clicked();
 
         return true;
     case 's':
-        // remplacer affichage par votre code
-        cout << keyval << "  " << __func__ << endl;
+        My_window::start_clicked();
 
         return true;
     case 'r':
-        // remplacer affichage par votre code
-        cout << keyval << "  " << __func__ << endl;
+        My_window::restart_clicked();
 
         return true;
     default:
@@ -238,16 +231,15 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
     case OPEN:
         if (file_name != "")
         {
-            // remplacer affichage par votre code
-            cout << file_name << "  " << __func__ << endl;
+            previous_file_name = file_name;
+            My_window::set_jeu(previous_file_name);
             dialog->hide();
         }
         break;
     case SAVE:
         if (file_name != "")
         {
-            // remplacer affichage par votre code
-            cout << file_name << "  " << __func__ << endl;
+            jeu.save(file_name);
             dialog->hide();
         }
         break;
@@ -273,7 +265,7 @@ void My_window::update()
 
     if (jeu.get_status() != ONGOING) // voir jeu.h
     {
-        //...
+        loop_conn.disconnect();
         buttons[B_SAVE].set_sensitive(false);
         buttons[B_START].set_sensitive(false);
         buttons[B_STEP].set_sensitive(false);

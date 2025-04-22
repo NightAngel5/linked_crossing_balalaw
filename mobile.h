@@ -14,13 +14,9 @@ public:
     Mobile(double x0, double y0, double a0, double d0);
     Mobile() = default;
     double get_x0() { return x0; }
-    void set_x0(double x) { x0 = x; }
     double get_y0() { return y0; }
-    void set_y0(double y) { y0 = y; }
     double get_a0() { return a0; }
-    void set_a0(double a) { a0 = a; }
     double get_d0() { return d0; }
-    void set_d0(double d) { d0 = d; }
 
 protected:
     double x0, y0, a0, d0;
@@ -50,7 +46,7 @@ public:
     std::vector<Cercle> constructionFaiseur() const;
     void draw();
     double get_r0() { return r0; }
-    void set_r0(double x) { r0 = x; }
+    unsigned get_nbe0() { return nbe0; }
     void move();
 
 private:
