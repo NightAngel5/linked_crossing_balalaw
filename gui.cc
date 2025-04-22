@@ -160,30 +160,26 @@ void My_window::set_key_controller()
 
 bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state)
 {
-    if (jeu.lecture_ok())
+    switch (keyval)
     {
-        switch (keyval)
-        {
-        case '1':
-        case GDK_KEY_KP_1:
-            if (!activated && jeu.get_status() == ONGOING)
-                My_window::step_clicked();
-            return true;
-        case 's':
-        case 'S': // Optional, in case caps lock is on
-            if (jeu.get_status() == ONGOING)
-                My_window::start_clicked();
-            return true;
-        case 'r':
-        case 'R':
-            if (!activated)
-                My_window::restart_clicked();
-            return true;
-        default:
-            return false;
-        }
+    case '1':
+    case GDK_KEY_KP_1:
+        if (buttons[B_STEP].get_sensitive())
+            My_window::step_clicked();
+        return true;
+    case 's':
+    case 'S':
+        if (buttons[B_START].get_sensitive())
+            My_window::start_clicked();
+        return true;
+    case 'r':
+    case 'R':
+        if (buttons[B_RESTART].get_sensitive())
+            My_window::restart_clicked();
+        return true;
+    default:
+        return false;
     }
-    return false;
 }
 
 void My_window::set_dialog(Gtk::FileChooserDialog *dialog)
