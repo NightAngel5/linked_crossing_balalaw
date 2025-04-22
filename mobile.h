@@ -29,7 +29,7 @@ public:
     Particule() = default;
     bool lecture(std::istringstream &data);
     unsigned get_c0() { return c0; }
-    void set_c0(unsigned x) { c0 = x; }
+    void set_c0(unsigned x);
     void draw();
     Particule move();
 

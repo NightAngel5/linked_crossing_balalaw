@@ -38,6 +38,13 @@ bool Particule::lecture(istringstream &data)
         return false;
 }
 
+void Particule::set_c0(unsigned x)
+{
+    if (!(0 <= x && x < time_to_split)) { cout << message::particule_counter(x); }
+    else
+        c0=x;
+}
+
 void Particule::draw()
 {
     drawCircle(Cercle(r_viz, x0, y0), GREEN, 0.7, PLEIN, CYAN);
