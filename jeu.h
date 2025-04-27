@@ -70,7 +70,7 @@ private:
                  const std::vector<Cercle> &v2, size_t a);
 
     bool impasse_faiseur(size_t j);
-    vParticules Jeu::update_particules();
+    vParticules update_particules();
 
 public:
     Mode get_mode()
