@@ -57,7 +57,7 @@ Particule Particule::move()
 {
     Cart P(x0, y0);
     Pol vect(d0, a0);
-    if (!Cercle(r_max).inclusion(Cercle(r_viz, (P + vect))))
+    if (!Cercle(r_max).inclusion(P+vect))
     {
         vect = reflect(P, vect, FORWARD);
     }

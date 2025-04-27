@@ -295,6 +295,16 @@ void Jeu::draw()
     for (auto i : vparticules)
     {
         i.draw();
+        // code supplémentaire pour le dessin des lignes entre particules  
+        // (utile pour le fichier de test 22)
+        //for(auto j:vparticules){
+        //    Cart P1(i.get_x0(),i.get_y0());
+        //    Cart P2(j.get_x0(),j.get_y0());
+        //    if (distance(P1,P2)<13)
+        //    {
+        //        drawLine(P1,P2,GREEN);
+        //    }    
+        //}
     }
     chaine.draw();
 }
