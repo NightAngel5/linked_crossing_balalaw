@@ -1,3 +1,4 @@
+// graphic.cc, Mohamed Yassine Toujani et Adam Belghith, V2
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>
@@ -16,7 +17,8 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
     ptcr = &cr;
 }
 
-void Graphic::draw_circle(double x, double y, double r, double width, Color C, Remplissage R, Color C_Interieur)
+void Graphic::draw_circle(double x, double y, double r, double width,
+                          Color C, Remplissage R, Color C_Interieur)
 {
     (*ptcr)->set_line_width(width);
     set_color(C_Interieur);
@@ -30,7 +32,8 @@ void Graphic::draw_circle(double x, double y, double r, double width, Color C, R
     (*ptcr)->stroke();
 }
 
-void Graphic::draw_line(double x1, double y1, double x2, double y2, double width, Color C)
+void Graphic::draw_line(double x1, double y1, double x2, double y2,
+                        double width, Color C)
 {
     (*ptcr)->set_line_width(width);
     (*ptcr)->move_to(x1, y1);

@@ -83,7 +83,7 @@ std::string message::faiseur_element_collision(unsigned id1, unsigned index1,
     reorder_for_consistency(index1, id1, index2, id2);
 
     return string("faiseur (") + to_string(id1) + string(") element (") 
-         + to_string(index1) + string(") collides with faiseur (") + to_string(id2) 
+         + to_string(index1) + string(") collides with faiseur (") + to_string(id2)
          + string(") element (") + to_string(index2) + string(")\n");
 }
 

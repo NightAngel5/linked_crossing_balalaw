@@ -84,7 +84,8 @@ void angleNormalise(double &angle)
 // Computes the Euclidean distance between two Cartesian points.
 double distance(const Cart &P1, const Cart &P2)
 {
-    return sqrt(pow((P1.point.x) - (P2.point.x), 2) + pow((P1.point.y) - (P2.point.y), 2));
+    return sqrt(pow((P1.point.x) - (P2.point.x), 2) 
+                    + pow((P1.point.y) - (P2.point.y), 2));
 }
 
 double distance(const Pol &P1, const Pol &P2)
@@ -115,7 +116,8 @@ bool intersection(Cercle C1, Cercle C2)
     }
 }
 
-// Computes the reflection of a vector relative to a point with an optional state adjustment.
+// Computes the reflection of a vector relative to a point
+// with an optional state adjustment.
 Pol reflect(Cart P, Pol V, State state)
 {
     if (state == BACKWARD)

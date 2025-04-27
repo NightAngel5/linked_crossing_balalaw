@@ -4,10 +4,10 @@
 
 using namespace std;
 
-Mobile::Mobile(double x0, double y0, double a0, double d0) : x0(x0), y0(y0), a0(a0), d0(d0) {}
-
-Particule::Particule(double x0, double y0, double a0, double d0, unsigned c0) : Mobile(x0, y0, a0, d0), c0(c0) {}
-
+Mobile::Mobile(double x0, double y0, double a0, double d0)
+    : x0(x0), y0(y0), a0(a0), d0(d0) {}
+Particule::Particule(double x0, double y0, double a0, double d0, unsigned c0)
+    : Mobile(x0, y0, a0, d0), c0(c0) {}
 // Reads and validates attributes for a particle.
 bool Particule::lecture(istringstream &data)
 {
@@ -40,9 +40,12 @@ bool Particule::lecture(istringstream &data)
 
 void Particule::set_c0(unsigned x)
 {
-    if (!(0 <= x && x < time_to_split)) { cout << message::particule_counter(x); }
+    if (!(0 <= x && x < time_to_split))
+    {
+        cout << message::particule_counter(x);
+    }
     else
-        c0=x;
+        c0 = x;
 }
 
 void Particule::draw()
@@ -62,21 +65,21 @@ Particule Particule::move()
     return Particule(P.point.x, P.point.y, vect.point.y, vect.point.x, c0 + 1);
 }
 
-Faiseur::Faiseur(double x0, double y0, double a0, double d0, unsigned r0, unsigned nbe0) : Mobile(x0, y0, a0, d0), r0(r0), nbe0(nbe0) {}
+Faiseur::Faiseur(double x0, double y0, double a0,
+                 double d0, unsigned r0, unsigned nbe0)
+    : Mobile(x0, y0, a0, d0), r0(r0), nbe0(nbe0) {}
 // Reads and validates attributes for a Faiseur + checking for collisions.
 bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
 {
-    if (data >> x0 >> y0 >> a0 >> d0 >> r0 >> nbe0) // lecture des attributs avec succès
-    {
+    if (data >> x0 >> y0 >> a0 >> d0 >> r0 >> nbe0) // lecture des attributs
+    {                                               // avec succès
         if (!Cercle(r_max).inclusion(Cercle(r0, x0, y0)))
         {
             cout << message::faiseur_outside(x0, y0);
             return false;
         }
         else if (!(-M_PI <= a0 && a0 <= M_PI))
-        {
             angleNormalise(a0);
-        }
         else if (!(0 <= d0 && d0 <= d_max))
         {
             cout << message::mobile_displacement(d0);
@@ -95,9 +98,7 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
         if (V.size() > 0)
         {
             if (collisionFaiseur(*this, V))
-            {
                 return false;
-            }
         }
         return true;
     }

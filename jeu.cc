@@ -339,9 +339,7 @@ unsigned Jeu::get_nb_artic()
     return nbArtic;
 }
 
-void Jeu::updateJeu()
-{
-    // update particules
+vParticules Jeu::update_particules(){
     vParticules V;
     V.reserve(vparticules.size() * 2); // worst case: every particle splits
     for (size_t i = 0; i < vparticules.size(); ++i)
@@ -349,24 +347,20 @@ void Jeu::updateJeu()
         if (vparticules[i].get_c0() == time_to_split)
         {
             if (nbPart == nb_particule_max)
-            {
                 nbPart -= 1;
-            }
             else if (nbPart < nb_particule_max)
             {
                 double n(vparticules[i].get_a0() + delta_split);
                 angleNormalise(n);
                 V.emplace_back(Particule(vparticules[i].get_x0(),
-                                         vparticules[i].get_y0(),
-                                         n,
+                                         vparticules[i].get_y0(), n,
                                          vparticules[i].get_d0() * coef_split, 0)
                                    .move());
                 V.back().set_c0(0);
                 n = vparticules[i].get_a0() - delta_split;
                 angleNormalise(n);
                 V.emplace_back(Particule(vparticules[i].get_x0(),
-                                         vparticules[i].get_y0(),
-                                         n,
+                                         vparticules[i].get_y0(), n,
                                          vparticules[i].get_d0() * coef_split, 0)
                                    .move());
                 V.back().set_c0(0);
@@ -376,7 +370,14 @@ void Jeu::updateJeu()
         else
             V.push_back(vparticules[i].move());
     }
-    vparticules = move(V);
+    return V;
+}
+
+void Jeu::updateJeu()
+{
+    // update particules
+    
+    vparticules = move(update_particules());
 
     // update faiseurs
     for (size_t i = 0; i < vfaiseurs.size(); ++i)
@@ -413,7 +414,8 @@ void Jeu::save(string file_name)
     for (auto i : vfaiseurs)
     {
         fichier << "\t" << i.get_x0() << " " << i.get_y0() << " " << i.get_a0()
-                << " " << i.get_d0() << " " << i.get_r0() << " " << i.get_nbe0() << endl;
+                << " " << i.get_d0() << " " << i.get_r0() << " " << i.get_nbe0()
+                << endl;
     }
     fichier << endl
             << nbArtic << endl;

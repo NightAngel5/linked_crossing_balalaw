@@ -1,3 +1,4 @@
+// gui.cc, Mohamed Yassine Toujani et Adam Belghith, V2
 #include <iostream>
 #include <cassert>
 #include "graphic_gui.h"
@@ -71,24 +72,24 @@ void My_window::set_commands()
         check.set_margin(1);
     }
 
-    buttons[B_EXIT].signal_clicked().connect(sigc::mem_fun(*this,
-                                                           &My_window::exit_clicked));
-    buttons[B_OPEN].signal_clicked().connect(sigc::mem_fun(*this,
-                                                           &My_window::open_clicked));
-    buttons[B_SAVE].signal_clicked().connect(sigc::mem_fun(*this,
-                                                           &My_window::save_clicked));
-    buttons[B_RESTART].signal_clicked().connect(sigc::mem_fun(*this,
-                                                              &My_window::restart_clicked));
-    buttons[B_START].signal_clicked().connect(sigc::mem_fun(*this,
-                                                            &My_window::start_clicked));
-    buttons[B_STEP].signal_clicked().connect(sigc::mem_fun(*this,
-                                                           &My_window::step_clicked));
+    buttons[B_EXIT].signal_clicked().connect(
+        sigc::mem_fun(*this, &My_window::exit_clicked));
+    buttons[B_OPEN].signal_clicked().connect(
+        sigc::mem_fun(*this, &My_window::open_clicked));
+    buttons[B_SAVE].signal_clicked().connect(
+        sigc::mem_fun(*this, &My_window::save_clicked));
+    buttons[B_RESTART].signal_clicked().connect(
+        sigc::mem_fun(*this, &My_window::restart_clicked));
+    buttons[B_START].signal_clicked().connect(
+        sigc::mem_fun(*this, &My_window::start_clicked));
+    buttons[B_STEP].signal_clicked().connect(
+        sigc::mem_fun(*this, &My_window::step_clicked));
     checks[0].set_active(true);
     checks[0].set_group(checks[1]);
-    checks[0].signal_toggled().connect(sigc::mem_fun(*this,
-                                                     &My_window::build_clicked));
-    checks[1].signal_toggled().connect(sigc::mem_fun(*this,
-                                                     &My_window::guide_clicked));
+    checks[0].signal_toggled().connect(
+        sigc::mem_fun(*this, &My_window::build_clicked));
+    checks[1].signal_toggled().connect(
+        sigc::mem_fun(*this, &My_window::guide_clicked));
 }
 
 void My_window::exit_clicked()
@@ -126,9 +127,8 @@ void My_window::start_clicked()
     }
     else if (jeu.get_status() == ONGOING)
     {
-        loop_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this,
-                                                                 &My_window::loop),
-                                                   25);
+        loop_conn = Glib::signal_timeout().connect(
+            sigc::mem_fun(*this, &My_window::loop), 25);
         activated = true;
         buttons[B_EXIT].set_sensitive(false);
         buttons[B_OPEN].set_sensitive(false);
@@ -153,8 +153,8 @@ void My_window::guide_clicked()
 void My_window::set_key_controller()
 {
     auto contr = Gtk::EventControllerKey::create();
-    contr->signal_key_pressed().connect(sigc::mem_fun(*this, &My_window::key_pressed),
-                                        false);
+    contr->signal_key_pressed().connect(
+        sigc::mem_fun(*this, &My_window::key_pressed), false);
     add_controller(contr);
 }
 
@@ -343,8 +343,9 @@ void My_window::set_mouse_controller()
     drawing.add_controller(move);
 }
 
-// cette fonction convertit l'entrée pos contenant les coordonnées (x,y) de la souris
-// dans l'espace GTKmm vers l'espace du Modèle => sortie de la fonction.
+// cette fonction convertit l'entrée pos contenant les coordonnées (x,y)
+// de la souris dans l'espace GTKmm vers l'espace du Modèle
+//=> sortie de la fonction.
 S2d My_window::scaled(S2d const &pos) const
 {
     int width = drawing.get_width();

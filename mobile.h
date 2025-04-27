@@ -40,7 +40,8 @@ private:
 class Faiseur : public Mobile
 {
 public:
-    Faiseur(double x0, double y0, double a0, double d0, unsigned r0, unsigned nbe0);
+    Faiseur(double x0, double y0, double a0, double d0,
+            unsigned r0, unsigned nbe0);
     Faiseur() = default;
     bool lecture(std::istringstream &data, const std::vector<Faiseur> &V);
     std::vector<Cercle> constructionFaiseur() const;

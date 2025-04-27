@@ -1,3 +1,4 @@
+// projet.cc, Mohamed Yassine Toujani et Adam Belghith, V2
 #include <gtkmm/application.h>
 #include <string>
 #include "gui.h"

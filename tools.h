@@ -73,7 +73,8 @@ Cart operator+(Cart a, const Pol &b);
 
 Pol opp(const Pol &p);
 
-void drawCircle(Cercle C, Color C1, double width = 0.7, Remplissage Remp = VIDE, Color C2 = WHITE);
+void drawCircle(Cercle C, Color C1, double width = 0.7,
+                Remplissage Remp = VIDE, Color C2 = WHITE);
 
 void drawLine(Cart C1, Cart C2, Color C, double width = 0.7);
 

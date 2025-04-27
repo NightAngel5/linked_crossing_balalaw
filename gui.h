@@ -1,3 +1,4 @@
+// gui.h, Mohamed Yassine Toujani et Adam Belghith, V2
 #ifndef GUI_H
 #define GUI_H
 

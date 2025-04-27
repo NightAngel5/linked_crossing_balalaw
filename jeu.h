@@ -66,12 +66,17 @@ private:
 
     bool collisionAF();
 
-    bool intouch(const std::vector<Cart> &v1, const std::vector<Cercle> &v2, size_t a);
+    bool intouch(const std::vector<Cart> &v1,
+                 const std::vector<Cercle> &v2, size_t a);
 
     bool impasse_faiseur(size_t j);
+    vParticules Jeu::update_particules();
 
 public:
-    Mode get_mode() { return mode; }
+    Mode get_mode()
+    {
+        return mode;
+    }
     Status get_status() { return status; }
     void set_status();
     Jeu();
