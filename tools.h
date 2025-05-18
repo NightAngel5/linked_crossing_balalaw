@@ -71,11 +71,15 @@ Cart &operator+=(Cart &a, const Pol &b);
 
 Cart operator+(Cart a, const Pol &b);
 
+Cart operator-(Cart a, Cart b);
+
 Pol opp(const Pol &p);
 
 void drawCircle(Cercle C, Color C1, double width = 0.7,
                 Remplissage Remp = VIDE, Color C2 = WHITE);
 
 void drawLine(Cart C1, Cart C2, Color C, double width = 0.7);
+
+Cart projection(Cart P, Cercle C);
 
 #endif

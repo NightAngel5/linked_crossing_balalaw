@@ -145,6 +145,11 @@ Cart operator+(Cart a, const Pol &b)
     return a += b;
 }
 
+Cart operator-(Cart a, Cart b)
+{
+    return Cart(a.point.x - b.point.x, a.point.y - b.point.y);
+}
+
 // Computes the opposite of a polar vector by flipping its angle.
 Pol opp(const Pol &p)
 {
@@ -161,4 +166,11 @@ void drawCircle(Cercle C, Color C1, double width, Remplissage Remp, Color C2)
 void drawLine(Cart C1, Cart C2, Color C, double width)
 {
     Graphic::draw_line(C1.point.x, C1.point.y, C2.point.x, C2.point.y, width, C);
+}
+
+Cart projection(Cart P, Cercle C)
+{
+    Pol v = (P - C.C).toPol();
+    v.point.x = C.R;
+    return C.C + v;
 }
