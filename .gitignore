@@ -1,3 +1,12 @@
 .vscode/settings.json
 .vscode/c_cpp_properties.json
 .vscode/c_cpp_propertieslinux.json
+graphic.o
+gui.o
+chaine.o
+message.o
+jeu.o
+projet.o
+mobile.o
+tools.o
+projet.exe
