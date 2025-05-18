@@ -43,6 +43,7 @@ void Jeu::set_status()
     if (score == 0)
     {
         status = LOST;
+        cout << "Hard Luck!" << endl;
     }
     else if (chaine.fin())
     {
@@ -331,7 +332,7 @@ void Jeu::reset()
     racine_set = false;
     chaine.reset();
     mode = CONSTRUCTION;
-    status = ONGOING;
+    status = LOST;
     lecture_ok_ = false;
 }
 bool Jeu::lecture_ok()
@@ -423,7 +424,7 @@ void Jeu::updateJeu()
         }
     }
     //update guidage
-    if (mode==GUIDAGE)
+    if (mode==GUIDAGE and racine_set)
     {
         chaine.guidage(xs,ys);
         if (collisionAF())
@@ -508,6 +509,7 @@ void Jeu::capture()
     nbArtic+=1;
     swap(vparticules[indice],vparticules.back());
     vparticules.pop_back();
+    nbPart -= 1;
     }
 
 }

@@ -262,11 +262,13 @@ bool My_window::loop()
 }
 void My_window::update()
 {
+    if(jeu.get_status()==ONGOING)
+    {
     jeu.updateJeu();
     update_infos();
     drawing.queue_draw();
-
-    if (jeu.get_status() != ONGOING) // voir jeu.h
+    }
+    else
     {
         start_clicked();
         buttons[B_SAVE].set_sensitive(false);
@@ -357,7 +359,7 @@ S2d My_window::scaled(S2d const &pos) const
 
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
-    if (jeu.get_status()==ONGOING)
+    if (activated)
     {
         if (jeu.get_mode()==GUIDAGE)
         {
@@ -377,17 +379,17 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 }
 void My_window::on_drawing_right_click(int n_press, double x, double y)
 {
-    if (jeu.get_status()==ONGOING)
+    if (activated)
+    {
+        if (jeu.get_mode()==CONSTRUCTION)
         {
-            if (jeu.get_mode()==CONSTRUCTION)
-            {
-                jeu.set_mode(GUIDAGE);
-            } 
-        }
-        else
-        {
-            My_window::step_clicked();
-        }
+            jeu.set_mode(GUIDAGE);
+        } 
+    }
+    else
+    {
+        My_window::step_clicked();
+    }
 }
 void My_window::on_drawing_move(double x, double y)
 {

@@ -84,12 +84,20 @@ void Chaine::reset()
 
 bool Chaine::fin()
 {
-    return Cercle(r_capture, articulations_.back()).inclusion(point_opp);
+    return articulations_.size()!=0 && Cercle(r_capture, articulations_.back()).inclusion(point_opp);
 }
 
 void Chaine::guidage(double xs, double ys)
-{ 
-    Cart but_inter(projection(Cart(xs, ys), Cercle(r_capture, articulations_.back())));
+{
+    Cart souris(xs, ys);
+    Cart but_inter;
+    if (Cercle(r_capture, articulations_.back()).inclusion(souris))
+    {
+        but_inter = souris;
+    }else
+    {
+        but_inter= projection(souris, Cercle(r_capture, articulations_.back()));
+    }
     bool ok = Cercle(r_max).inclusion(but_inter);
     vector<Cart> copy(articulations());
     if (ok)
@@ -97,7 +105,7 @@ void Chaine::guidage(double xs, double ys)
         copy.back() = but_inter;
         for (size_t i = articulations_.size() - 1; i > 0; i--)
         {
-            Pol v((copy[i] - copy[i - 1]).toPol());
+            Pol v((copy[i-1] - copy[i]).toPol());
             v.point.x = distance(articulations_[i], articulations_[i - 1]);
             copy[i - 1] = copy[i] + v;
             ok = Cercle(r_max).inclusion(copy[i - 1]);

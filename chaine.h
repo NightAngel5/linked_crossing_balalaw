@@ -13,7 +13,6 @@ class Chaine
 private:
     std::vector<Cart> articulations_;
     Cart point_opp;
-
 public:
     bool lecture(std::istringstream &data);
     void pointOppose();
