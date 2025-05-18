@@ -425,7 +425,7 @@ void Jeu::updateJeu()
     //update guidage
     if (mode==GUIDAGE)
     {
-        chaine.guidage();
+        chaine.guidage(xs,ys);
         if (collisionAF())
             {
                 chaine.reset();
