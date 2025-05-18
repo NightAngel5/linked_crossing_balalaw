@@ -17,10 +17,12 @@ private:
 public:
     bool lecture(std::istringstream &data);
     void pointOppose();
+    Cart get_point_opp() const;
     std::vector<Cart> articulations();
     void draw();
-    bool tete_arrivee();
     void reset();
+    bool fin();
+    void guidage(double xs, double ys);
 };
 
 #endif

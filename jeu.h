@@ -43,6 +43,8 @@ private:
     unsigned score, nbPart, nbFais, nbArtic;
     Mode mode;
     bool lecture_ok_;
+    double xs, ys;
+    bool racine_set;
 
     Status status;
 
@@ -71,12 +73,12 @@ private:
 
     bool impasse_faiseur(size_t j);
     vParticules update_particules();
+    void draw_starting_point();
 
 public:
-    Mode get_mode()
-    {
-        return mode;
-    }
+    void set_xs(double x) { xs = x; }
+    void set_ys(double y) { ys = y; }
+    Mode get_mode() { return mode; }
     Status get_status() { return status; }
     void set_status();
     Jeu();

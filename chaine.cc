@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 // Reads and validates articulation points for the chain.
 bool Chaine::lecture(std::istringstream &data)
 {
@@ -46,6 +47,11 @@ void Chaine::pointOppose()
     point_opp = P.toCart();
 }
 
+Cart Chaine::get_point_opp() const
+{
+    return point_opp;
+}
+
 // Returns the list of articulation points of the chain.
 std::vector<Cart> Chaine::articulations()
 {
@@ -70,13 +76,54 @@ void Chaine::draw()
     }
 }
 
-bool Chaine::tete_arrivee()
-{
-    return articulations_.size() && 
-    distance(articulations_[articulations_.size()], point_opp) < epsil_zero;
-}
-
 void Chaine::reset()
 {
     articulations_.clear();
+    point_opp = Cart(0, 0);
+}
+
+bool Chaine::fin()
+{
+    return Cercle(r_capture, articulations_.back()).inclusion(point_opp);
+}
+
+void Chaine::guidage(double xs, double ys)
+{ 
+    Cart but_inter(projection(Cart(xs, ys), Cercle(r_capture, articulations_.back())));
+    bool ok = Cercle(r_max).inclusion(but_inter);
+    vector<Cart> copy(articulations());
+    if (ok)
+    {
+        copy.back() = but_inter;
+        for (size_t i = articulations_.size() - 1; i > 0; i--)
+        {
+            Pol v((copy[i] - copy[i - 1]).toPol());
+            v.point.x = distance(articulations_[i], articulations_[i - 1]);
+            copy[i - 1] = copy[i] + v;
+            ok = Cercle(r_max).inclusion(copy[i - 1]);
+            if (!ok)
+            {
+                break;
+            }
+        }
+        copy.front() = articulations_.front();
+        if (ok)
+        {
+            for (size_t i = 0; i < articulations_.size() - 1; i++)
+            {
+                Pol v((copy[i + 1] - copy[i]).toPol());
+                v.point.x = distance(articulations_[i + 1], articulations_[i]);
+                copy[i + 1] = copy[i] + v;
+                ok = Cercle(r_max).inclusion(copy[i + 1]);
+                if (!ok)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    if (ok)
+    {
+        articulations_ = move(copy);
+    }
 }

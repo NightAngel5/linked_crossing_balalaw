@@ -44,9 +44,10 @@ void Jeu::set_status()
     {
         status = LOST;
     }
-    else if (chaine.tete_arrivee())
+    else if (chaine.fin())
     {
         status = WON;
+        cout << "Bravo! Bien joué!" << endl;
     }
     else
     {
@@ -218,6 +219,7 @@ bool Jeu::decodage_artic(istringstream &data)
     {
         if (chaine.articulations().size() == nbArtic)
         {
+            racine_set = true;
             chaine.pointOppose();
             etat_lecture = MODE;
         }
@@ -306,7 +308,14 @@ void Jeu::draw()
         //    }    
         //}
     }
-    chaine.draw();
+    if (racine_set)
+    {
+        chaine.draw();
+    }
+    else
+    {
+        draw_starting_point();
+    }
 }
 
 void Jeu::reset()
@@ -319,6 +328,7 @@ void Jeu::reset()
     nbFais = 0;
     nbArtic = 0;
     nbPart = 0;
+    racine_set = false;
     chaine.reset();
     mode = CONSTRUCTION;
     status = ONGOING;
@@ -381,6 +391,15 @@ vParticules Jeu::update_particules(){
             V.push_back(vparticules[i].move());
     }
     return V;
+}
+
+void Jeu::draw_starting_point()
+{
+    Cart P(projection(Cart(xs, ys), Cercle(r_max)));
+    drawCircle(Cercle(r_capture, P), RED);
+    Pol M = opp(P.toPol());
+    M.point.x = r_max;
+    drawCircle(Cercle(r_viz, M.toCart()), BLACK, 0.7, PLEIN, BLACK);
 }
 
 void Jeu::updateJeu()
