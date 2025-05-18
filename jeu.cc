@@ -491,7 +491,7 @@ void Jeu::capture()
     int indice;
     Cart new_artic;
     Cercle C(r_capture,M);
-    for (size_t i ; i<vparticules.size(); ++i)
+    for (size_t i(0) ; i<vparticules.size(); ++i)
     {
         Cart P(vparticules[i].get_x0(),vparticules[i].get_y0());
         if (C.inclusion(P))
