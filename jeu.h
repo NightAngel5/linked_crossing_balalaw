@@ -93,6 +93,7 @@ public:
     unsigned get_nb_artic();
     void save(std::string);
     void set_mode(Mode m) { mode = m; }
+    void capture();
 };
 
 #endif

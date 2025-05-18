@@ -414,9 +414,25 @@ void Jeu::updateJeu()
         if (!impasse_faiseur(i))
         {
             vfaiseurs[i].move();
+            if (collisionAF())
+            {
+                chaine.reset();
+                nbArtic=0;
+                racine_set=false;
+            }
         }
     }
-
+    //update guidage
+    if (mode==GUIDAGE)
+    {
+        chaine.guidage();
+        if (collisionAF())
+            {
+                chaine.reset();
+                nbArtic=0;
+                racine_set=false;
+            }
+    }
     // update score et statut
     score -= 1;
     set_status();
@@ -456,4 +472,42 @@ void Jeu::save(string file_name)
             << (mode == 0
                     ? "CONSTRUCTION"
                     : "GUIDAGE");
+}
+
+
+void Jeu::capture()
+{
+    Cart M;
+    if (racine_set)
+    {
+        M=chaine.articulations().back();
+    }
+    else
+    {
+        M=projection(Cart(xs,ys),Cercle(r_max));
+    }
+    int nb_in=0;
+    int indice;
+    Cart new_artic;
+    Cercle C(r_capture,M);
+    for (size_t i ; i<vparticules.size(); ++i)
+    {
+        Cart P(vparticules[i].get_x0(),vparticules[i].get_y0());
+        if (C.inclusion(P))
+        {
+            nb_in+=1;
+            new_artic=P;
+            indice=i;
+        }
+        if (nb_in>1) { break;}
+    }
+    if (nb_in==1)
+    {
+    chaine.addArtic(new_artic);
+    racine_set=true;
+    nbArtic+=1;
+    swap(vparticules[indice],vparticules.back());
+    vparticules.pop_back();
+    }
+
 }

@@ -21,6 +21,7 @@ public:
     std::vector<Cart> articulations();
     void draw();
     void reset();
+    void addArtic(Cart P);
     bool fin();
     void guidage(double xs, double ys);
 };
