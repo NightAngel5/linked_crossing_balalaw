@@ -21,6 +21,7 @@ public:
     void draw();
     bool tete_arrivee();
     void reset();
+    void addArtic(Cart P);
 };
 
 #endif

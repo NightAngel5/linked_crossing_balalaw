@@ -357,15 +357,45 @@ S2d My_window::scaled(S2d const &pos) const
 
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
-    // remplacer affichage par votre code
+    if (jeu.get_status()==ONGOING)
+    {
+        if (jeu.get_mode()==GUIDAGE)
+        {
+            jeu.set_mode(CONSTRUCTION);
+        } 
+        else if (jeu.get_mode()==CONSTRUCTION)
+        {
+            jeu.capture();
+        }
+    }
+    else
+    {
+        My_window::step_clicked();
+    }
+    
+    
 }
 void My_window::on_drawing_right_click(int n_press, double x, double y)
 {
-    // remplacer affichage par votre code
+    if (jeu.get_status()==ONGOING)
+        {
+            if (jeu.get_mode()==CONSTRUCTION)
+            {
+                jeu.set_mode(GUIDAGE);
+            } 
+        }
+        else
+        {
+            My_window::step_clicked();
+        }
 }
 void My_window::on_drawing_move(double x, double y)
 {
-    // remplacer affichage par votre code
+    S2d H (scaled (S2d{x,y}));
+    jeu.set_xs(H.x);
+    jeu.set_ys(H.y);
+    drawing.queue_draw();
+
 }
 
 void My_window::set_jeu(string file_name)

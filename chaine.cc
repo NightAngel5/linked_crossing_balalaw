@@ -80,3 +80,12 @@ void Chaine::reset()
 {
     articulations_.clear();
 }
+
+void Chaine::addArtic(Cart P)
+{
+    articulations_.push_back(P);
+    if (articulations_.size()==1)
+    {
+        pointOppose();
+    }  
+}

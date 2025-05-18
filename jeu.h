@@ -71,6 +71,7 @@ private:
 
     bool impasse_faiseur(size_t j);
     vParticules update_particules();
+    
 
 public:
     Mode get_mode()
@@ -91,6 +92,7 @@ public:
     unsigned get_nb_artic();
     void save(std::string);
     void set_mode(Mode m) { mode = m; }
+    void capture();
 };
 
 #endif
