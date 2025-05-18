@@ -354,7 +354,7 @@ vParticules Jeu::update_particules(){
     V.reserve(vparticules.size() * 2); // worst case: every particle splits
     for (size_t i = 0; i < vparticules.size(); ++i)
     {
-        if (vparticules[i].get_c0() == time_to_split)
+        if (vparticules[i].get_c0() == time_to_split-1)
         {
             if (nbPart == nb_particule_max)
                 nbPart -= 1;
