@@ -144,14 +144,10 @@ void My_window::step_clicked()
 }
 void My_window::build_clicked()
 {
-    checks[0].set_active(true);
-    checks[1].set_active(false);
     jeu.set_mode(CONSTRUCTION);
 }
 void My_window::guide_clicked()
 {
-    checks[0].set_active(false);
-    checks[1].set_active(true);
     jeu.set_mode(GUIDAGE);
 }
 void My_window::set_key_controller()
