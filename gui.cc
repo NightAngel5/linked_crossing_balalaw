@@ -363,7 +363,7 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
     {
         if (jeu.get_mode()==GUIDAGE)
         {
-            jeu.set_mode(CONSTRUCTION);
+            build_clicked();
         } 
         else if (jeu.get_mode()==CONSTRUCTION)
         {
@@ -383,7 +383,7 @@ void My_window::on_drawing_right_click(int n_press, double x, double y)
     {
         if (jeu.get_mode()==CONSTRUCTION)
         {
-            jeu.set_mode(GUIDAGE);
+            guide_clicked();
         } 
     }
     else
