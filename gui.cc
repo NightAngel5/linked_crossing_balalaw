@@ -364,6 +364,7 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
         if (jeu.get_mode()==GUIDAGE)
         {
             build_clicked();
+            checks[0].set_active(true);
         } 
         else if (jeu.get_mode()==CONSTRUCTION)
         {
@@ -384,6 +385,7 @@ void My_window::on_drawing_right_click(int n_press, double x, double y)
         if (jeu.get_mode()==CONSTRUCTION)
         {
             guide_clicked();
+            checks[1].set_active(true);
         } 
     }
     else
