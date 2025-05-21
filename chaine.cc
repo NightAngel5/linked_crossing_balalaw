@@ -98,36 +98,25 @@ void Chaine::guidage(double xs, double ys)
     {
         but_inter= projection(souris, Cercle(r_capture, articulations_.back()));
     }
-    bool ok = Cercle(r_max).inclusion(but_inter);
     vector<Cart> copy(articulations());
-    if (ok)
+    copy.back() = but_inter;
+    for (size_t i = articulations_.size() - 1; i > 0; i--)
     {
-        copy.back() = but_inter;
-        for (size_t i = articulations_.size() - 1; i > 0; i--)
+        Pol v((copy[i-1] - copy[i]).toPol());
+        v.point.x = distance(articulations_[i], articulations_[i - 1]);
+        copy[i - 1] = copy[i] + v;
+    }
+    copy.front() = articulations_.front();
+    bool ok = true;
+    for (size_t i = 0; i < articulations_.size() - 1; i++)
+    {
+        Pol v((copy[i + 1] - copy[i]).toPol());
+        v.point.x = distance(articulations_[i + 1], articulations_[i]);
+        copy[i + 1] = copy[i] + v;
+        ok = Cercle(r_max).inclusion(copy[i + 1]);
+        if (!ok)
         {
-            Pol v((copy[i-1] - copy[i]).toPol());
-            v.point.x = distance(articulations_[i], articulations_[i - 1]);
-            copy[i - 1] = copy[i] + v;
-            ok = Cercle(r_max).inclusion(copy[i - 1]);
-            if (!ok)
-            {
-                break;
-            }
-        }
-        copy.front() = articulations_.front();
-        if (ok)
-        {
-            for (size_t i = 0; i < articulations_.size() - 1; i++)
-            {
-                Pol v((copy[i + 1] - copy[i]).toPol());
-                v.point.x = distance(articulations_[i + 1], articulations_[i]);
-                copy[i + 1] = copy[i] + v;
-                ok = Cercle(r_max).inclusion(copy[i + 1]);
-                if (!ok)
-                {
-                    break;
-                }
-            }
+            break;
         }
     }
     if (ok)
