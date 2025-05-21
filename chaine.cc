@@ -84,7 +84,8 @@ void Chaine::reset()
 
 bool Chaine::fin()
 {
-    return articulations_.size()!=0 && Cercle(r_capture, articulations_.back()).inclusion(point_opp);
+    return articulations_.size()!=0 &&
+     Cercle(r_capture, articulations_.back()).inclusion(point_opp);
 }
 
 void Chaine::guidage(double xs, double ys)

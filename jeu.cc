@@ -249,7 +249,8 @@ bool Jeu::collisionAF(bool epsil)
 }
 
 // Checks for specific articulation-Faiseur collisions.
-bool Jeu::intouch(const vector<Cart> &v1, const vector<Cercle> &v2, size_t a, bool epsil)
+bool Jeu::intouch(const vector<Cart> &v1, const vector<Cercle> &v2,
+                  size_t a, bool epsil)
 {
     if (v1.size() == 0)
     {

@@ -164,7 +164,8 @@ bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V, bool eps
 }
 
 // Determines if two sets of circles (representing Faiseurs) intersect.
-bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2, size_t id1, size_t id2, bool epsil)
+bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2, size_t id1,
+            size_t id2, bool epsil)
 {
     for (size_t i(0); i < v1.size(); ++i)
     {
