@@ -29,31 +29,12 @@ bool Jeu::lecture(std::string nom_fichier)
         {
             return false;
         }
-        set_status();
         lecture_ok_ = true;
         cout << message::success();
         return true;
     }
     else
         return false;
-}
-
-void Jeu::set_status()
-{
-    if (score == 0)
-    {
-        status = LOST;
-        cout << "Hard Luck!" << endl;
-    }
-    else if (chaine.fin())
-    {
-        status = WON;
-        cout << "Bravo! Bien joué!" << endl;
-    }
-    else
-    {
-        status = ONGOING;
-    }
 }
 
 bool Jeu::impasse_faiseur(size_t j)
@@ -332,7 +313,7 @@ void Jeu::reset()
     racine_set = false;
     chaine.reset();
     mode = CONSTRUCTION;
-    status = LOST;
+    status = ONGOING;
     lecture_ok_ = false;
 }
 bool Jeu::lecture_ok()
@@ -405,38 +386,47 @@ void Jeu::draw_starting_point()
 
 void Jeu::updateJeu()
 {
-    // update particules
-    
-    vparticules = move(update_particules());
-
-    // update faiseurs
-    for (size_t i = 0; i < vfaiseurs.size(); ++i)
-    {
-        if (!impasse_faiseur(i))
+    if (score>0){
+        // Décrémentation du score
+        score -= 1;
+        // update particules
+        vparticules = move(update_particules());
+        // update faiseurs
+        for (size_t i = 0; i < vfaiseurs.size(); ++i)
         {
-            vfaiseurs[i].move();
-            if (collisionAF())
+            if (!impasse_faiseur(i))
             {
-                chaine.reset();
-                nbArtic=0;
-                racine_set=false;
+                vfaiseurs[i].move();
+                if (collisionAF())
+                {
+                    chaine.reset();
+                    nbArtic=0;
+                    racine_set=false;
+                }
+            }
+        }
+        //update guidage
+        if (mode==GUIDAGE and racine_set)
+        {
+            chaine.guidage(xs,ys);
+            if (collisionAF())
+                {
+                    chaine.reset();
+                    nbArtic=0;
+                    racine_set=false;
+                }
+            if (chaine.fin())
+            {
+                status = WON;
+                cout << "Bravo!" << endl;
             }
         }
     }
-    //update guidage
-    if (mode==GUIDAGE and racine_set)
+    else
     {
-        chaine.guidage(xs,ys);
-        if (collisionAF())
-            {
-                chaine.reset();
-                nbArtic=0;
-                racine_set=false;
-            }
+        status = LOST;
+        cout << "Hard Luck!" << endl;
     }
-    // update score et statut
-    score -= 1;
-    set_status();
 }
 
 void Jeu::save(string file_name)

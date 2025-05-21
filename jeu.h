@@ -80,7 +80,6 @@ public:
     void set_ys(double y) { ys = y; }
     Mode get_mode() { return mode; }
     Status get_status() { return status; }
-    void set_status();
     Jeu();
     bool lecture(std::string nom_fichier);
     void updateJeu();

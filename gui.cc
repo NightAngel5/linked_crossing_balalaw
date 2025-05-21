@@ -268,7 +268,7 @@ void My_window::update()
     update_infos();
     drawing.queue_draw();
     }
-    else
+    if(jeu.get_status()!=ONGOING)
     {
         start_clicked();
         buttons[B_SAVE].set_sensitive(false);
@@ -371,7 +371,7 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
             jeu.capture();
         }
     }
-    else
+    else if(jeu.lecture_ok())
     {
         My_window::step_clicked();
     }
@@ -388,7 +388,7 @@ void My_window::on_drawing_right_click(int n_press, double x, double y)
             checks[1].set_active(true);
         } 
     }
-    else
+    else if(jeu.lecture_ok())
     {
         My_window::step_clicked();
     }
