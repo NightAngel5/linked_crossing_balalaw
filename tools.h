@@ -48,9 +48,9 @@ struct Cercle
     Cart C;
     double R;
 
-    bool inclusion(const Cart &P) const;
+    bool inclusion(const Cart &P, bool epsil=true) const;
 
-    bool inclusion(const Cercle &C1) const;
+    bool inclusion(const Cercle &C1, bool epsil = true) const;
 };
 
 void angleNormalise(double &angle);
@@ -63,7 +63,7 @@ double distance(const Cart &P1, const Pol &P2);
 
 double distance(const Pol &P1, const Cart &P2);
 
-bool intersection(Cercle C1, Cercle C2);
+bool intersection(Cercle C1, Cercle C2, bool epsil = true);
 
 Pol reflect(Cart P, Pol V, State state);
 

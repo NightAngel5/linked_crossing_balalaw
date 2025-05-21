@@ -13,14 +13,10 @@ bool Particule::lecture(istringstream &data)
 {
     if (data >> x0 >> y0 >> a0 >> d0 >> c0) // lecture des attributs avec succès
     {
-        if (!Cercle(r_max).inclusion(Cart(x0, y0)))
+        if (!Cercle(r_max).inclusion(Cart(x0, y0),false))
         {
             cout << message::particule_outside(x0, y0);
             return false;
-        }
-        else if (!(-M_PI <= a0 && a0 <= M_PI))
-        {
-            angleNormalise(a0);
         }
         else if (!(0 <= d0 && d0 <= d_max))
         {
@@ -32,6 +28,7 @@ bool Particule::lecture(istringstream &data)
             cout << message::particule_counter(c0);
             return false;
         }
+        angleNormalise(a0);
         return true;
     }
     else
@@ -73,13 +70,11 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
 {
     if (data >> x0 >> y0 >> a0 >> d0 >> r0 >> nbe0) // lecture des attributs
     {                                               // avec succès
-        if (!Cercle(r_max).inclusion(Cercle(r0, x0, y0)))
+        if (!Cercle(r_max).inclusion(Cercle(r0, x0, y0),false))
         {
             cout << message::faiseur_outside(x0, y0);
             return false;
         }
-        else if (!(-M_PI <= a0 && a0 <= M_PI))
-            angleNormalise(a0);
         else if (!(0 <= d0 && d0 <= d_max))
         {
             cout << message::mobile_displacement(d0);
@@ -95,9 +90,10 @@ bool Faiseur::lecture(istringstream &data, const std::vector<Faiseur> &V)
             cout << message::faiseur_nbe(nbe0);
             return false;
         }
+        angleNormalise(a0);
         if (V.size() > 0)
         {
-            if (collisionFaiseur(*this, V))
+            if (collisionFaiseur(*this, V,false))
                 return false;
         }
         return true;
@@ -153,7 +149,7 @@ void Faiseur::move()
 }
 
 // Checks if a Faiseur collides with any other Faiseur in a list.
-bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V)
+bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V, bool epsil)
 {
     std::vector<Cercle> v1(F1.constructionFaiseur());
     for (size_t i(0); i < V.size(); ++i)
@@ -168,13 +164,13 @@ bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V)
 }
 
 // Determines if two sets of circles (representing Faiseurs) intersect.
-bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2, size_t id1, size_t id2)
+bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2, size_t id1, size_t id2, bool epsil)
 {
     for (size_t i(0); i < v1.size(); ++i)
     {
         for (size_t j(0); j < v2.size(); ++j)
         {
-            if (intersection(v1[i], v2[j]))
+            if (intersection(v1[i], v2[j],epsil))
             {
                 cout << message::faiseur_element_collision(id1, j, id2, i);
                 return true;

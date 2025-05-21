@@ -55,8 +55,8 @@ private:
     unsigned nbe0;
 };
 
-bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V);
+bool collisionFaiseur(const Faiseur &F1, const std::vector<Faiseur> &V, bool epsil = true);
 
-bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2, size_t a, size_t b);
+bool impact(std::vector<Cercle> v1, std::vector<Cercle> v2, size_t a, size_t b, bool epsil = true);
 
 #endif

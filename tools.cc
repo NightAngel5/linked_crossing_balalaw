@@ -43,8 +43,14 @@ Cercle::Cercle(double R, double x, double y) : R(R), C(x, y)
 }
 
 // Checks if a Cartesian point is inside the circle.
-bool Cercle::inclusion(const Cart &P) const
+bool Cercle::inclusion(const Cart &P, bool epsil) const
 {
+    double a = epsil_zero;
+    if (!epsil)
+    {
+        a = 0;
+    }
+    double epsil_zero = a;
     if (distance(C, P) < R - epsil_zero)
     {
         return true;
@@ -56,8 +62,14 @@ bool Cercle::inclusion(const Cart &P) const
 }
 
 // Checks if a circle is entirely inside another circle.
-bool Cercle::inclusion(const Cercle &C1) const
+bool Cercle::inclusion(const Cercle &C1, bool epsil) const
 {
+    double a = epsil_zero;
+    if (!epsil)
+    {
+        a = 0;
+    }
+    double epsil_zero = a;
     if (distance(C, C1.C) < R - C1.R - epsil_zero)
     {
         return true;
@@ -104,8 +116,14 @@ double distance(const Pol &P1, const Cart &P2)
 }
 
 // Checks if two circles intersect.
-bool intersection(Cercle C1, Cercle C2)
+bool intersection(Cercle C1, Cercle C2, bool epsil)
 {
+    double a = epsil_zero;
+    if (!epsil)
+    {
+        a = 0;
+    }
+    double epsil_zero = a;
     if (distance(C1.C, C2.C) >= C2.R + C1.R + epsil_zero)
     {
         return false;

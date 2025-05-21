@@ -12,21 +12,21 @@ bool Chaine::lecture(std::istringstream &data)
     if (data >> x >> y)
     {
         Cart art(x, y);
-        if (!Cercle(r_max).inclusion(art))
+        if (!Cercle(r_max).inclusion(art,false))
         {
             cout << message::articulation_outside(x, y);
             return false;
         }
         else if (articulations_.size() == 0)
         {
-            if (art.norme() < r_max - r_capture + epsil_zero)
+            if (art.norme() < r_max - r_capture)
             {
                 cout << message::chaine_racine(x, y);
                 return false;
             }
         }
         else if (distance(articulations_[articulations_.size() - 1],
-                          art) > r_capture - epsil_zero)
+                          art) > r_capture)
         {
             cout << message::chaine_max_distance(articulations_.size() - 1);
             return false;

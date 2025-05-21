@@ -25,7 +25,7 @@ bool Jeu::lecture(std::string nom_fichier)
             if (decodage_ligne(data) == false)
                 return false;
         }
-        if (collisionAF() == true)
+        if (collisionAF(false) == true)
         {
             return false;
         }
@@ -234,13 +234,13 @@ bool Jeu::decodage_mode(istringstream &data)
 }
 
 // Checks for collisions between articulations and Faiseurs.
-bool Jeu::collisionAF()
+bool Jeu::collisionAF(bool epsil)
 {
     vector<Cart> v1(chaine.articulations());
     for (size_t i(0); i < vfaiseurs.size(); ++i)
     {
         vector<Cercle> v2(vfaiseurs[i].constructionFaiseur());
-        if (intouch(v1, v2, i))
+        if (intouch(v1, v2, i,epsil))
         {
             return true;
         }
@@ -249,7 +249,7 @@ bool Jeu::collisionAF()
 }
 
 // Checks for specific articulation-Faiseur collisions.
-bool Jeu::intouch(const vector<Cart> &v1, const vector<Cercle> &v2, size_t a)
+bool Jeu::intouch(const vector<Cart> &v1, const vector<Cercle> &v2, size_t a, bool epsil)
 {
     if (v1.size() == 0)
     {
@@ -259,7 +259,7 @@ bool Jeu::intouch(const vector<Cart> &v1, const vector<Cercle> &v2, size_t a)
     {
         for (size_t j(0); j < v2.size(); ++j)
         {
-            if (v2[j].inclusion(v1[i]))
+            if (v2[j].inclusion(v1[i],epsil))
             {
                 cout << message::chaine_articulation_collision(i, a, j);
                 return true;

@@ -66,10 +66,11 @@ private:
 
     bool decodage_mode(std::istringstream &data);
 
-    bool collisionAF();
+    bool collisionAF(bool epsil = true);
 
     bool intouch(const std::vector<Cart> &v1,
-                 const std::vector<Cercle> &v2, size_t a);
+                 const std::vector<Cercle> &v2, size_t a,
+                 bool epsil = true);
 
     bool impasse_faiseur(size_t j);
     vParticules update_particules();
