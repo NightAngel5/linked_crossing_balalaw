@@ -359,38 +359,27 @@ S2d My_window::scaled(S2d const &pos) const
 
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
-    if (activated)
+    if (jeu.lecture_ok())
     {
-        if (jeu.get_mode()==GUIDAGE)
+        build_clicked();
+        checks[0].set_active(true);
+        jeu.capture();
+        if(!activated)
         {
-            build_clicked();
-            checks[0].set_active(true);
-        } 
-        else if (jeu.get_mode()==CONSTRUCTION)
-        {
-            jeu.capture();
+            My_window::step_clicked();
         }
     }
-    else if(jeu.lecture_ok())
-    {
-        My_window::step_clicked();
-    }
-    
-    
 }
 void My_window::on_drawing_right_click(int n_press, double x, double y)
 {
-    if (activated)
+    if (jeu.lecture_ok())
     {
-        if (jeu.get_mode()==CONSTRUCTION)
+        guide_clicked();
+        checks[1].set_active(true);
+        if(!activated)
         {
-            guide_clicked();
-            checks[1].set_active(true);
+            My_window::step_clicked();
         } 
-    }
-    else if(jeu.lecture_ok())
-    {
-        My_window::step_clicked();
     }
 }
 void My_window::on_drawing_move(double x, double y)
