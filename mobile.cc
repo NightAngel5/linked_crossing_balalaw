@@ -1,4 +1,4 @@
-// mobile.cc, Mohamed Yassine Toujani et Adam Belghith, V2
+// mobile.cc, Mohamed Yassine Toujani 20% et Adam Belghith 80%, V2
 #include "mobile.h"
 #include <iostream>
 

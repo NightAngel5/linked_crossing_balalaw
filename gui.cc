@@ -1,4 +1,4 @@
-// gui.cc, Mohamed Yassine Toujani et Adam Belghith, V2
+// gui.cc, Mohamed Yassine Toujani 50% et Adam Belghith 50%, V2
 #include <iostream>
 #include <cassert>
 #include "graphic_gui.h"

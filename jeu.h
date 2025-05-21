@@ -75,6 +75,7 @@ private:
     bool impasse_faiseur(size_t j);
     vParticules update_particules();
     void draw_starting_point();
+    void initialiser_souris();
 
 public:
     void set_xs(double x) { xs = x; }

@@ -1,4 +1,4 @@
-// chaine.cc, Mohamed Yassine Toujani et Adam Belghith, V2
+// chaine.cc, Mohamed Yassine Toujani 80% et Adam Belghith 20%, V2
 #include "chaine.h"
 #include <iostream>
 

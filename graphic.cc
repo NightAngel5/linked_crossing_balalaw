@@ -1,4 +1,4 @@
-// graphic.cc, Mohamed Yassine Toujani et Adam Belghith, V2
+// graphic.cc, Mohamed Yassine Toujani 100% et Adam Belghith, V2
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>

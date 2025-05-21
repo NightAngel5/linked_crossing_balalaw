@@ -1,4 +1,4 @@
-// tools.cc, Mohamed Yassine Toujani et Adam Belghith, V3
+// tools.cc, Mohamed Yassine Toujani 50% et Adam Belghith 50%, V3
 #include "tools.h"
 
 using namespace std;

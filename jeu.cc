@@ -1,4 +1,4 @@
-// jeu.cc, Mohamed Yassine Toujani et Adam Belghith, V2
+// jeu.cc, Mohamed Yassine Toujani 50% et Adam Belghith 50%, V2
 #include "jeu.h"
 
 using namespace std;
@@ -30,6 +30,7 @@ bool Jeu::lecture(std::string nom_fichier)
             return false;
         }
         lecture_ok_ = true;
+        initialiser_souris();
         cout << message::success();
         return true;
     }
@@ -383,6 +384,15 @@ void Jeu::draw_starting_point()
     Pol M = opp(P.toPol());
     M.point.x = r_max;
     drawCircle(Cercle(r_viz, M.toCart()), BLACK, 0.7, PLEIN, BLACK);
+}
+
+void Jeu::initialiser_souris()
+{
+    if (nbArtic>0)
+    {
+        xs = chaine.articulations().back().point.x;
+        ys = chaine.articulations().back().point.y;
+    }
 }
 
 void Jeu::updateJeu()
